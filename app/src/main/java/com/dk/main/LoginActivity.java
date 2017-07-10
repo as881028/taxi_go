@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        openDatabase(this);
+        openDatabase();
         initView();
         var = ((GlobalVar) getApplicationContext());
         // set last user account and password (SQLite)
@@ -119,9 +119,9 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void openDatabase(Context Context) {
+    private void openDatabase() {
         Log.i(TAG,"openDatabase");
-        userDBHelper = new DBHelper(Context);
+        userDBHelper = new DBHelper(this);
     }
 
     private void closeDatabase() {
@@ -129,10 +129,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private Cursor getCursor() {
+
         SQLiteDatabase db = userDBHelper.getReadableDatabase();
         String[] columns = {_ID, ACCOUNT, PASSWORD};
+
         Cursor cursor = db.query(TABLE_NAME, columns, null, null, null, null, null);
-        startManagingCursor(cursor);
+        if(cursor!=null)
+        {
+            startManagingCursor(cursor);
+            Log.i("test","not null");
+        }
+
+
         return cursor;
     }
 
@@ -279,6 +287,9 @@ public class LoginActivity extends AppCompatActivity {
                     ContentValues values = new ContentValues();
                     values.put(ACCOUNT, value.get(0));
                     values.put(PASSWORD, value.get(1));
+                    db.insert(TABLE_NAME, null, values);
+
+
                 } else {
                     Log.i(TAG, "登入失敗");
                 }

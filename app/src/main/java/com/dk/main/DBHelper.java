@@ -17,7 +17,7 @@ import static com.dk.main.DBConstants.PASSWORD;
 
 public class DBHelper extends SQLiteOpenHelper {
     private final static String DATABASE_NAME = "taxi_go.db";
-    private final static int DATABASE_VERSION = 2;
+    private final static int DATABASE_VERSION = 3;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -29,7 +29,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
          final String INIT_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
                 _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                ACCOUNT + " CHAR, " +
+                ACCOUNT + " CHAR UNIQUE, " +
                 PASSWORD + " CHAR);";
         db.execSQL(INIT_TABLE);
     }
