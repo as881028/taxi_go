@@ -3,7 +3,10 @@ package com.dk.main;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -39,11 +42,19 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
 import static android.Manifest.permission.READ_CONTACTS;
+
+// DB columns
+import static android.provider.BaseColumns._ID;
+import static com.dk.main.DBConstants.ACCOUNT;
+import static com.dk.main.DBConstants.PASSWORD;
+import static com.dk.main.DBConstants.TABLE_NAME;
+//
 
 /**
  * A login screen that offers login via email/password.
@@ -69,16 +80,21 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private DBHelper userDBHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // Set up the login form.
-        mPhoneView = (EditText) findViewById(R.id.phone);
+        openDatabase(this);
+        initView();
         var = ((GlobalVar) getApplicationContext());
+        // set last user account and password (SQLite)
+        setViewData();
+    }
 
-
+    private void initView() {
+        mPhoneView = (EditText) findViewById(R.id.phone);
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -90,7 +106,6 @@ public class LoginActivity extends AppCompatActivity {
                 return false;
             }
         });
-
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -98,9 +113,41 @@ public class LoginActivity extends AppCompatActivity {
                 attemptLogin();
             }
         });
-
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+
+    }
+
+    private void openDatabase(Context Context) {
+        Log.i(TAG,"openDatabase");
+        userDBHelper = new DBHelper(Context);
+    }
+
+    private void closeDatabase() {
+        userDBHelper.close();
+    }
+
+    private Cursor getCursor() {
+        SQLiteDatabase db = userDBHelper.getReadableDatabase();
+        String[] columns = {_ID, ACCOUNT, PASSWORD};
+        Cursor cursor = db.query(TABLE_NAME, columns, null, null, null, null, null);
+        startManagingCursor(cursor);
+        return cursor;
+    }
+
+    private void setViewData() {
+        Cursor cursor = getCursor();
+        while (cursor.moveToNext()) {
+            String account = cursor.getString(1);
+            Log.i(TAG,account);
+            String password = cursor.getString(2);
+            Log.i(TAG,password);
+            mPhoneView.setText(account);
+            mPasswordView.setText(password);
+
+        }
+
     }
 
     /**
@@ -108,6 +155,12 @@ public class LoginActivity extends AppCompatActivity {
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        closeDatabase();
+    }
+
     private void attemptLogin() {
         if (mAuthTask != null) {
             return;
@@ -208,8 +261,29 @@ public class LoginActivity extends AppCompatActivity {
 
             try {
                 // Simulate network access.
-                getHttpReuslt(mPhone, mPassword);
-                Thread.sleep(2000);
+                ArrayList<String> key = new ArrayList<>();
+                ArrayList<String> value = new ArrayList<>();
+
+                key.add("account");
+                value.add(mPhone);
+                key.add("password");
+                value.add(mPassword);
+
+
+                String result = phpConnection.createConnection(var.queryUser, key, value);
+
+                if (result.equals("user")) {
+                    Log.i(TAG, "登入成功");
+
+                    SQLiteDatabase db = userDBHelper.getWritableDatabase();
+                    ContentValues values = new ContentValues();
+                    values.put(ACCOUNT, value.get(0));
+                    values.put(PASSWORD, value.get(1));
+                } else {
+                    Log.i(TAG, "登入失敗");
+                }
+
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 return false;
             }
@@ -248,75 +322,72 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void getHttpReuslt(String account, String password) {
 
-        String responseString = null;
-        String urlString = "http://140.128.98.46/taxi_go/query_user.php";
-        HttpURLConnection connection = null;
-
-        try {
-            // 初始化 URL
-            URL url = new URL(urlString);
-            // 取得連線物件
-            connection = (HttpURLConnection) url.openConnection();
-            // 設定 request timeout
-            connection.setReadTimeout(1500);
-            connection.setConnectTimeout(1500);
-            connection.setDoOutput(true);// 設置此方法,允許向伺服器輸出內容
-
-
-            // post請求的參數
-            String data = String.format("account=%s&password=%s", account, password);
-
-
-            OutputStream out = connection.getOutputStream();// 產生一個OutputStream，用來向伺服器傳數據
-            out.write(data.getBytes());
-            out.flush();
-            out.close();
-            // 模擬 Chrome 的 user agent, 因為手機的網頁內容較不完整
-//            connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36");
-            // 設定開啟自動轉址
-            connection.setInstanceFollowRedirects(true);
-
-            // 若要求回傳 200 OK 表示成功取得網頁內容
-            if (connection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
-                // 讀取網頁內容
-                InputStream inputStream = connection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-
-                String tempStr;
-                StringBuffer stringBuffer = new StringBuffer();
-
-                while ((tempStr = bufferedReader.readLine()) != null) {
-                    stringBuffer.append(tempStr);
-                }
-
-                bufferedReader.close();
-                inputStream.close();
-
-                /*
-                // 取得網頁內容類型
-                String mime = connection.getContentType();
-                boolean isMediaStream = false;
-
-                // 判斷是否為串流檔案
-                if (mime.indexOf("audio") == 0 || mime.indexOf("video") == 0) {
-                    isMediaStream = true;
-                }
-                 */
-                // 網頁內容字串
-                responseString = stringBuffer.toString();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            // 中斷連線
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
-
-
-    }
+//    private void getHttpReuslt(String account, String password) {
+//
+//        String responseString = null;
+//        String urlString = "http://140.128.98.46/taxi_go/query_user.php";
+//        HttpURLConnection connection = null;
+//
+//        try {
+//            // 初始化 URL
+//            URL url = new URL(urlString);
+//            // 取得連線物件
+//            connection = (HttpURLConnection) url.openConnection();
+//            // 設定 request timeout
+//            connection.setReadTimeout(1500);
+//            connection.setConnectTimeout(1500);
+//            connection.setDoOutput(true);// 設置此方法,允許向伺服器輸出內容
+//
+//            // post請求的參數
+//            String data = String.format("account=%s&password=%s", account, password);
+//
+//            OutputStream out = connection.getOutputStream();// 產生一個OutputStream，用來向伺服器傳數據
+//            out.write(data.getBytes());
+//            out.flush();
+//            out.close();
+//            // 模擬 Chrome 的 user agent, 因為手機的網頁內容較不完整
+////            connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36");
+//            // 設定開啟自動轉址
+//            connection.setInstanceFollowRedirects(true);
+//
+//            // 若要求回傳 200 OK 表示成功取得網頁內容
+//            if (connection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
+//                // 讀取網頁內容
+//                InputStream inputStream = connection.getInputStream();
+//                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+//
+//                String tempStr;
+//                StringBuffer stringBuffer = new StringBuffer();
+//
+//                while ((tempStr = bufferedReader.readLine()) != null) {
+//                    stringBuffer.append(tempStr);
+//                }
+//
+//                bufferedReader.close();
+//                inputStream.close();
+//
+//                /*
+//                // 取得網頁內容類型
+//                String mime = connection.getContentType();
+//                boolean isMediaStream = false;
+//
+//                // 判斷是否為串流檔案
+//                if (mime.indexOf("audio") == 0 || mime.indexOf("video") == 0) {
+//                    isMediaStream = true;
+//                }
+//                 */
+//                // 網頁內容字串
+//                responseString = stringBuffer.toString();
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {
+//            // 中斷連線
+//            if (connection != null) {
+//                connection.disconnect();
+//            }
+//        }
+//    }
 }
 

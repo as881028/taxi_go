@@ -1,6 +1,11 @@
 package com.dk.main;
 
+import android.app.Application;
 import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,14 +21,27 @@ import java.util.HashMap;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import static android.R.id.input;
+
 /**
  * Created by DK on 2017/7/6.
  */
 
 public class phpConnection {
-    public static String createConnection(String urlString, ArrayList<String> key, ArrayList<String> value) {
+
+
+    public static String createConnection(String webFunction, ArrayList<String> key, ArrayList<String> value) {
+
+        String TAG = "phpConnection";
         String responseString = null;
-//        String urlString = "http://140.128.98.46/taxi_go/query_user.php";
+
+        GlobalVar var = new GlobalVar();
+        // url String 組合
+        String webSiteIP = var.webSiteIP;
+        String webPath = var.webPath;
+        String urlString = String.format("http://%s%s%s", webSiteIP, webPath, webFunction);
+        //
+
         HttpURLConnection connection = null;
 
         try {
@@ -50,8 +68,8 @@ public class phpConnection {
                     data += "&";
                 }
             }
-//            Log.i("phpConnection",urlString);
-            Log.i("phpConnection",data);
+
+
             OutputStream out = connection.getOutputStream();// 產生一個OutputStream，用來向伺服器傳數據
             out.write(data.getBytes());
             out.flush();
@@ -77,23 +95,14 @@ public class phpConnection {
                 bufferedReader.close();
                 inputStream.close();
 
-                /*
-                // 取得網頁內容類型
-                String mime = connection.getContentType();
-                boolean isMediaStream = false;
 
-                // 判斷是否為串流檔案
-                if (mime.indexOf("audio") == 0 || mime.indexOf("video") == 0) {
-                    isMediaStream = true;
-                }
-                 */
                 // 網頁內容字串
-
                 responseString = stringBuffer.toString();
-                Log.i("phpConnection",responseString);
-            }
-            else{
-                Log.i("test","Connection fail");
+
+                return parseJson(responseString);
+
+            } else {
+                Log.i(TAG, "Connection fail");
 
             }
         } catch (IOException e) {
@@ -107,4 +116,23 @@ public class phpConnection {
         return responseString;
     }
 
+    private static String parseJson(String mJSONText) {
+        String type = "";
+        try {
+
+            JSONArray jsonarray = new JSONArray(mJSONText);
+            for (int i = 0; i < jsonarray.length(); i++) {
+                JSONObject jsonobject = jsonarray.getJSONObject(i);
+                type = jsonobject.getString("type");
+            }
+
+        } catch (
+                JSONException e)
+
+        {
+            e.printStackTrace();
+        }
+        return type;
     }
+
+}
