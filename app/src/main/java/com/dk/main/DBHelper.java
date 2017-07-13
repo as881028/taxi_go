@@ -26,19 +26,23 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
-         final String INIT_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
+        dropDB(db);
+        final String INIT_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
                 _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ACCOUNT + " CHAR UNIQUE, " +
                 PASSWORD + " CHAR);";
         db.execSQL(INIT_TABLE);
     }
 
+    public void dropDB(SQLiteDatabase db) {
+        final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+        db.execSQL(DROP_TABLE);
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db,
                           int oldVersion, int newVersion) {
-        final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
-        db.execSQL(DROP_TABLE);
+        dropDB(db);
         onCreate(db);
 
     }

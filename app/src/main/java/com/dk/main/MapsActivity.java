@@ -1,15 +1,24 @@
 package com.dk.main;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -21,7 +30,19 @@ import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.location.LocationServices;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener {
+import java.util.ArrayList;
+
+import static com.dk.main.DBConstants.ACCOUNT;
+import static com.dk.main.DBConstants.PASSWORD;
+import static com.dk.main.DBConstants.TABLE_NAME;
+
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener, LocationSource.OnLocationChangedListener {
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
     class Coordinate {
         protected Double dLatitude;
         protected Double dLongitude;
@@ -43,10 +64,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     protected static final String TAG = "MapActivity";
-
+    private DriverMapTask mMapTask = null;
     protected GoogleApiClient mGoogleApiClient;
     protected Location mLastLocation;
-
+    private GlobalVar var;
     private GoogleMap mMap;
     Coordinate Coordinate = new Coordinate();
 
@@ -56,7 +77,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         buildGoogleApiClient();
-
+        var = ((GlobalVar) getApplicationContext());
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -70,6 +91,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .addApi(LocationServices.API)
                 .build();
     }
+
 
     @Override
     protected void onStart() {
@@ -107,6 +129,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Double mLatitude = location.getLatitude();
+        Double mLongitude = location.getLongitude();
+        LatLng latLng = new LatLng(mLatitude, mLongitude);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+//        mMap.addMarker(new MarkerOptions().position(latLng).title("You are here!"));
+        changeLocation(mLatitude,mLongitude);
+    }
+
+
     @Override
     public void onConnected(@Nullable Bundle bundle) {
 
@@ -117,9 +152,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Log.i(TAG, mLastLocation.getLongitude() + "");
             Coordinate.setCoordinate(mLastLocation.getLatitude(), mLastLocation.getLongitude());
             //
+
             LatLng nowLocation = new LatLng(Coordinate.dLatitude, Coordinate.dLongitude);
             mMap.addMarker(new MarkerOptions().position(nowLocation).title("You are here!"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(nowLocation));
+            //
+            CameraUpdate center = CameraUpdateFactory.newLatLngZoom(nowLocation, 15);
+
+            mMap.animateCamera(center);
+            changeLocation(Coordinate.dLatitude, Coordinate.dLongitude);
+
             //
 
         } else {
@@ -128,14 +170,58 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+
+
     @Override
     public void onConnectionSuspended(int i) {
         Log.i(TAG, "Connection suspended");
         mGoogleApiClient.connect();
     }
 
-    @Override
-    public void onConnectionFailed(ConnectionResult result) {
-        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
+    private void changeLocation(Double latitude, Double longitude) {
+        if (mMapTask != null) {
+            return;
+        }
+        mMapTask = new DriverMapTask(latitude.toString(), longitude.toString());
+        mMapTask.execute((Void) null);
     }
+
+
+    public class DriverMapTask extends AsyncTask<Void, Void, Boolean> {
+
+        private final String mLatitude;
+        private final String mLongitude;
+
+        DriverMapTask(String latitude, String longitude) {
+            mLatitude = latitude;
+            mLongitude = longitude;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+            try {
+                ArrayList<String> key = new ArrayList<>();
+                ArrayList<String> value = new ArrayList<>();
+
+//                key.add("did");
+                key.add("latitude");
+                key.add("longitude");
+//                value.add("1");
+                value.add(mLatitude);
+                value.add(mLongitude);
+                String result = phpConnection.createConnection(var.driver_location_add, key, value);
+                Log.i(TAG, result);
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                return false;
+
+            }
+
+            // TODO: register the new account here.
+            return true;
+        }
+
+    }
+
 }

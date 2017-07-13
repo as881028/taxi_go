@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
@@ -289,11 +290,17 @@ public class LoginActivity extends AppCompatActivity {
                     values.put(PASSWORD, value.get(1));
                     db.insert(TABLE_NAME, null, values);
 
+                    //
+                    Intent intent = new Intent();
+                    intent.setClass(LoginActivity.this,MapsActivity.class);
+                    startActivity(intent);
+                    LoginActivity.this.finish();
+                    //
+
 
                 } else {
                     Log.i(TAG, "登入失敗");
                 }
-
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
                 return false;
@@ -319,7 +326,7 @@ public class LoginActivity extends AppCompatActivity {
             showProgress(false);
 
             if (success) {
-                finish();
+              finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
