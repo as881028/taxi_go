@@ -1,5 +1,6 @@
 package com.dk.main;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -10,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -48,6 +50,9 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import static android.Manifest.permission.*;
+
+import static android.Manifest.permission.*;
 import static android.Manifest.permission.READ_CONTACTS;
 
 // DB columns
@@ -94,6 +99,9 @@ public class LoginActivity extends AppCompatActivity {
         setViewData();
     }
 
+
+
+
     private void initView() {
         mPhoneView = (EditText) findViewById(R.id.phone);
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -121,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void openDatabase() {
-        Log.i(TAG,"openDatabase");
+        Log.i(TAG, "openDatabase");
         userDBHelper = new DBHelper(this);
     }
 
@@ -135,10 +143,9 @@ public class LoginActivity extends AppCompatActivity {
         String[] columns = {_ID, ACCOUNT, PASSWORD};
 
         Cursor cursor = db.query(TABLE_NAME, columns, null, null, null, null, null);
-        if(cursor!=null)
-        {
+        if (cursor != null) {
             startManagingCursor(cursor);
-            Log.i("test","not null");
+            Log.i("test", "not null");
         }
 
 
@@ -149,9 +156,9 @@ public class LoginActivity extends AppCompatActivity {
         Cursor cursor = getCursor();
         while (cursor.moveToNext()) {
             String account = cursor.getString(1);
-            Log.i(TAG,account);
+            Log.i(TAG, account);
             String password = cursor.getString(2);
-            Log.i(TAG,password);
+            Log.i(TAG, password);
             mPhoneView.setText(account);
             mPasswordView.setText(password);
 
@@ -292,7 +299,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     //
                     Intent intent = new Intent();
-                    intent.setClass(LoginActivity.this,MapsActivity.class);
+                    intent.setClass(LoginActivity.this, MapsActivity.class);
                     startActivity(intent);
                     LoginActivity.this.finish();
                     //
@@ -326,7 +333,7 @@ public class LoginActivity extends AppCompatActivity {
             showProgress(false);
 
             if (success) {
-              finish();
+                finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

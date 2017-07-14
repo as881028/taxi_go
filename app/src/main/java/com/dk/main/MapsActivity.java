@@ -1,12 +1,15 @@
 package com.dk.main;
 
 import android.content.ContentValues;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -35,6 +38,10 @@ import java.util.ArrayList;
 import static com.dk.main.DBConstants.ACCOUNT;
 import static com.dk.main.DBConstants.PASSWORD;
 import static com.dk.main.DBConstants.TABLE_NAME;
+
+import android.Manifest;
+
+import static android.Manifest.permission.*;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener, LocationSource.OnLocationChangedListener {
 
@@ -70,18 +77,68 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GlobalVar var;
     private GoogleMap mMap;
     Coordinate Coordinate = new Coordinate();
-
+    private final String PERMISSION_ACCESS_FINE_LOCATION = "android.permission.ACCESS_FINE_LOCATION";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        checkPermission();
+        if (!hasPermission()) {
+            if (needCheckPermission()) {
+                //如果須要檢查權限，由於這個步驟要等待使用者確認，
+                //所以不能立即執行儲存的動作，
+                //必須在 onRequestPermissionsResult 回應中才執行
+                return;
+            }
+        }
         buildGoogleApiClient();
         var = ((GlobalVar) getApplicationContext());
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+    }
+
+    protected void checkPermission() {
+
+    }
+    /**
+     * 確認是否要請求權限(API > 23)
+     * API < 23 一律不用詢問權限
+     */
+    private boolean needCheckPermission() {
+        //MarshMallow(API-23)之後要在 Runtime 詢問權限
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            String[] perms = {PERMISSION_ACCESS_FINE_LOCATION};
+            int permsRequestCode = 200;
+            requestPermissions(perms, permsRequestCode);
+            return true;
+        }
+        return false;
+    }
+    /**
+     * 是否已經請求過該權限
+     * API < 23 一律回傳 true
+     */
+    private boolean hasPermission(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            return(ActivityCompat.checkSelfPermission(this, PERMISSION_ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 200){
+            if (grantResults.length > 0) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d(">>>", "取得授權，可以執行動作了");
+                    buildGoogleApiClient();
+                }
+            }
+        }
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -137,8 +194,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng latLng = new LatLng(mLatitude, mLongitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-//        mMap.addMarker(new MarkerOptions().position(latLng).title("You are here!"));
-        changeLocation(mLatitude,mLongitude);
+        changeLocation(mLatitude, mLongitude);
     }
 
 
@@ -169,7 +225,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
     }
-
 
 
     @Override
