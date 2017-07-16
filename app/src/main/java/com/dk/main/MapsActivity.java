@@ -1,12 +1,14 @@
 package com.dk.main;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -44,7 +46,7 @@ import android.Manifest;
 
 import static android.Manifest.permission.*;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener, LocationSource.OnLocationChangedListener {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -79,25 +81,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     Coordinate Coordinate = new Coordinate();
     private final String PERMISSION_ACCESS_FINE_LOCATION = "android.permission.ACCESS_FINE_LOCATION";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
         //畫面不關
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        //檢查權限
-        checkPermission();
-        if (!hasPermission()) {
-            if (needCheckPermission()) {
-                //如果須要檢查權限，由於這個步驟要等待使用者確認，
-                //所以不能立即執行儲存的動作，
-                //必須在 onRequestPermissionsResult 回應中才執行
-                return;
-            }
-        }
         //
         buildGoogleApiClient();
         var = ((GlobalVar) getApplicationContext());
@@ -107,9 +99,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    protected void checkPermission() {
 
-    }
     /**
      * 確認是否要請求權限(API > 23)
      * API < 23 一律不用詢問權限
@@ -124,13 +114,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         return false;
     }
+
     /**
      * 是否已經請求過該權限
      * API < 23 一律回傳 true
      */
-    private boolean hasPermission(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            return(ActivityCompat.checkSelfPermission(this, PERMISSION_ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+    private boolean hasPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return (ActivityCompat.checkSelfPermission(this, PERMISSION_ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
         }
         return true;
     }
@@ -138,11 +129,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 200){
+        if (requestCode == 200) {
             if (grantResults.length > 0) {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.d(">>>", "取得授權，可以執行動作了");
                     buildGoogleApiClient();
+                    mGoogleApiClient.connect();
                 }
             }
         }
@@ -160,7 +152,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
+
+        //檢查權限 > v23就等待權限
+        //<23直接連接地圖
+        if (!hasPermission()) {
+            if (needCheckPermission()) {
+                //如果須要檢查權限，由於這個步驟要等待使用者確認，
+                //所以不能立即執行儲存的動作，
+                //必須在 onRequestPermissionsResult 回應中才執行
+                return;
+            }
+
+
+        } else {
+            mGoogleApiClient.connect();
+        }
+//
     }
 
     @Override
@@ -225,10 +232,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.animateCamera(center);
             changeLocation(Coordinate.dLatitude, Coordinate.dLongitude);
 
-            //
-
         } else {
             Toast.makeText(this, "偵測不到定位，請確認定位功能已開啟。", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));    //開啟設定頁面
         }
 
     }
@@ -266,10 +272,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 ArrayList<String> key = new ArrayList<>();
                 ArrayList<String> value = new ArrayList<>();
 
-//                key.add("did");
+                key.add("phone");
                 key.add("latitude");
                 key.add("longitude");
-//                value.add("1");
+                Log.i(TAG,var.phone);
+                value.add(var.phone);
                 value.add(mLatitude);
                 value.add(mLongitude);
                 String result = phpConnection.createConnection(var.driver_location_add, key, value);

@@ -100,8 +100,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-
-
     private void initView() {
         mPhoneView = (EditText) findViewById(R.id.phone);
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -145,7 +143,7 @@ public class LoginActivity extends AppCompatActivity {
         Cursor cursor = db.query(TABLE_NAME, columns, null, null, null, null, null);
         if (cursor != null) {
             startManagingCursor(cursor);
-            Log.i("test", "not null");
+
         }
 
 
@@ -156,9 +154,12 @@ public class LoginActivity extends AppCompatActivity {
         Cursor cursor = getCursor();
         while (cursor.moveToNext()) {
             String account = cursor.getString(1);
-            Log.i(TAG, account);
             String password = cursor.getString(2);
-            Log.i(TAG, password);
+            if (var.debug) {
+                Log.i(TAG, account);
+                Log.i(TAG, password);
+            }
+
             mPhoneView.setText(account);
             mPasswordView.setText(password);
 
@@ -290,14 +291,16 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (result.equals("user")) {
                     Log.i(TAG, "登入成功");
-
+                    //data insert to database
                     SQLiteDatabase db = userDBHelper.getWritableDatabase();
                     ContentValues values = new ContentValues();
                     values.put(ACCOUNT, value.get(0));
                     values.put(PASSWORD, value.get(1));
                     db.insert(TABLE_NAME, null, values);
 
-                    //
+                    var.phone = mPhone;
+
+                    // 換頁 to MapsActivity
                     Intent intent = new Intent();
                     intent.setClass(LoginActivity.this, MapsActivity.class);
                     startActivity(intent);
@@ -310,7 +313,18 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
+                if(var.debug)
+                    Log.i(TAG, "Internet error");
                 return false;
+            } catch (NullPointerException e) {
+                if (var.debug) {
+                    Log.i(TAG, "NULLPOINT");
+                    return false;
+                }
+
+            } catch (Exception e) {
+                if(var.debug)
+                    Log.i(TAG,e.toString());
             }
 //
 //            for (String credential : DUMMY_CREDENTIALS) {

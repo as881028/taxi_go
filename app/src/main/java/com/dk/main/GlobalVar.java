@@ -8,6 +8,8 @@ import android.app.Application;
 
 public class GlobalVar extends Application {
     public Boolean debug = false;
+
+    public String phone ="";
     public String webSiteIP = "140.128.101.210";
     public String webPath = "/taxi_go";
     public String queryUser = "/query_user.php";
