@@ -14,5 +14,6 @@ public class GlobalVar extends Application {
     public String webPath = "/taxi_go";
     public String queryUser = "/query_user.php";
     public String  driver_location_add = "/driver_location_add.php";
+    public String test = "dasda";
 
 }
