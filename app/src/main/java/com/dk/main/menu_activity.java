@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class menu_activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -47,6 +48,13 @@ public class menu_activity extends AppCompatActivity
                 Intent i = new Intent();
                 i.setClass(menu_activity.this, latest_news.class);
                 startActivityForResult(i,0);
+            }
+        });
+        findViewById(R.id.reservation).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(menu_activity.this, "Button2 Click!", Toast.LENGTH_SHORT).show();
+                onBackPressed();
             }
         });
 
