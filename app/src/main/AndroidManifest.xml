@@ -47,11 +47,18 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".latest_news"
+            android:label="@string/title_activity_latest_news">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".InstanceIDService">
             <intent-filter>
@@ -67,7 +74,7 @@
         <activity
             android:name=".menu_activity"
             android:label="@string/title_activity_menu_activity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
