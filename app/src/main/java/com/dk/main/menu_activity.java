@@ -41,22 +41,6 @@ public class menu_activity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        //navigation drawer 選單內點擊
-        findViewById(R.id.latest_news).setOnClickListener(new View.OnClickListener() { // i= (Button) findViewById(R.id.latest_news),   i.setOnClickListener(new View.OnClickListener()
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent();
-                i.setClass(menu_activity.this, latest_news.class);
-                startActivityForResult(i,0);
-            }
-        });
-        findViewById(R.id.reservation).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(menu_activity.this, "Button2 Click!", Toast.LENGTH_SHORT).show();
-                onBackPressed();
-            }
-        });
 
 //        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 //        navigationView.setNavigationItemSelectedListener(this);
