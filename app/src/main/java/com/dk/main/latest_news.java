@@ -7,16 +7,27 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class latest_news extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_latest_news);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setContentView(R.layout.activity_menu);
+
+        //取代app_bar的include ， 傳Layout
+        replaceInclude(R.layout.activity_latest_news);
+        
+        TextView text = (TextView) findViewById(R.id.news_text);
+        text.setText("testtest");
+
+
         initMenuBar();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -29,6 +40,16 @@ public class latest_news extends AppCompatActivity {
         });
 
     }
+
+    private void replaceInclude(int layout) {
+        View include = findViewById(R.id.include_menu);
+        ViewGroup parent = (ViewGroup) include.getParent();
+        int index = parent.indexOfChild(include);
+        parent.removeView(include);
+        include = getLayoutInflater().inflate(layout, parent, false);
+        parent.addView(include, index);
+    }
+
     private void initMenuBar() {
         //menu tool bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
