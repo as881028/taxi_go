@@ -102,6 +102,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         //地圖同步
         mapFragment.getMapAsync(this);
+        //navigation drawer 選單內點擊
+        findViewById(R.id.latest_news).setOnClickListener(new View.OnClickListener() { // i= (Button) findViewById(R.id.latest_news),   i.setOnClickListener(new View.OnClickListener()
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent();
+                i.setClass(MapsActivity.this, latest_news.class);
+                startActivity(i);
+            }
+        });
 
     }
 

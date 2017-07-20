@@ -80,7 +80,7 @@
                 android:drawableLeft="@android:drawable/btn_star_big_on"
                 android:padding="5dp"
                 android:text="最新消息"
-                android:textSize="20dp"/>
+                android:textSize="20dp" />
 
             <Button
                 android:id="@+id/reservation"
@@ -91,7 +91,7 @@
                 android:drawableLeft="@android:drawable/btn_star_big_on"
                 android:padding="5dp"
                 android:text="預約"
-                android:textSize="20dp"/>
+                android:textSize="20dp" />
 
             <Button
                 android:id="@+id/order_record"
@@ -102,7 +102,7 @@
                 android:drawableLeft="@android:drawable/btn_star_big_on"
                 android:padding="5dp"
                 android:text="接單紀錄"
-                android:textSize="20dp"/>
+                android:textSize="20dp" />
 
             <Button
                 android:id="@+id/service_center"
@@ -112,7 +112,7 @@
                 android:background="@android:color/transparent"
                 android:drawableLeft="@android:drawable/btn_star_big_on"
                 android:text="服務中心"
-                android:textSize="20dp"/>
+                android:textSize="20dp" />
 
             <Button
                 android:id="@+id/sign_out"
@@ -122,7 +122,7 @@
                 android:background="@android:color/transparent"
                 android:drawableLeft="@android:drawable/btn_star_big_on"
                 android:text="登出"
-                android:textSize="20dp"/>
+                android:textSize="20dp" />
 
         </LinearLayout>
 

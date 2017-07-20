@@ -17,6 +17,7 @@ public class latest_news extends AppCompatActivity {
         setContentView(R.layout.activity_latest_news);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        initMenuBar();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -26,6 +27,7 @@ public class latest_news extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
     }
     private void initMenuBar() {
         //menu tool bar
