@@ -37,8 +37,10 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener {
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -73,6 +75,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     Coordinate Coordinate = new Coordinate();
     private final String PERMISSION_ACCESS_FINE_LOCATION = "android.permission.ACCESS_FINE_LOCATION";
+
+    Timer timer = new Timer(true);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,6 +195,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onStop();
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
+            timer.cancel();
         }
     }
 
@@ -218,24 +223,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     @Override
-    public void onLocationChanged(Location location) {
-        Double mLatitude = location.getLatitude();
-        Double mLongitude = location.getLongitude();
-        LatLng latLng = new LatLng(mLatitude, mLongitude);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-        changeLocation(mLatitude, mLongitude);
-    }
-
-
-    @Override
     public void onConnected(@Nullable Bundle bundle) {
 
         // 這行指令在 IDE 會出現紅線，不過仍可正常執行，可不予理會
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null) {
-            Log.i(TAG, mLastLocation.getLatitude() + "");
-            Log.i(TAG, mLastLocation.getLongitude() + "");
+            if (var.debug) {
+                Log.i(TAG, mLastLocation.getLatitude() + "");
+                Log.i(TAG, mLastLocation.getLongitude() + "");
+            }
+
             Coordinate.setCoordinate(mLastLocation.getLatitude(), mLastLocation.getLongitude());
             //
 
@@ -246,6 +243,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             CameraUpdate center = CameraUpdateFactory.newLatLngZoom(nowLocation, 15);
 
             mMap.animateCamera(center);
+
+            timer.schedule(new LocationTimerTask(), 1000, 5000);
             changeLocation(Coordinate.dLatitude, Coordinate.dLongitude);
 
         } else {
@@ -263,9 +262,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void changeLocation(Double latitude, Double longitude) {
-        if (mMapTask != null) {
-            return;
-        }
+
         mMapTask = new DriverMapTask(latitude.toString(), longitude.toString());
         mMapTask.execute((Void) null);
     }
@@ -291,22 +288,35 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 key.add("phone");
                 key.add("latitude");
                 key.add("longitude");
-                Log.i(TAG,var.phone);
+
                 value.add(var.phone);
                 value.add(mLatitude);
                 value.add(mLongitude);
                 String result = phpConnection.createConnection(var.driver_location_add, key, value);
-                Log.i(TAG, result);
+                if (var.debug) {
+                    Log.i(TAG, result);
+                }
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
-                return false;
 
+                mMapTask.cancel(true);
+                return false;
             }
 
-            // TODO: register the new account here.
+            mMapTask.cancel(true);
             return true;
         }
 
     }
+
+    class LocationTimerTask extends TimerTask {
+        @Override
+        public void run() {
+            changeLocation(Coordinate.dLatitude, Coordinate.dLongitude);
+        }
+
+
+    }
+
 
 }

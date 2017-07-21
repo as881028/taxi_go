@@ -36,6 +36,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -288,8 +292,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 String result = phpConnection.createConnection(var.queryUser, key, value);
-
-                if (result.equals("driver")) {
+                              if (parseJson(result).equals("driver")) {
                     Log.i(TAG, "司機 登入成功");
                     //data insert to database
                     SQLiteDatabase db = userDBHelper.getWritableDatabase();
@@ -360,7 +363,22 @@ public class LoginActivity extends AppCompatActivity {
             showProgress(false);
         }
     }
+    private static String parseJson(String mJSONText) {
+        String type = "";
+        try {
 
+            JSONArray jsonarray = new JSONArray(mJSONText);
+            for (int i = 0; i < jsonarray.length(); i++) {
+                JSONObject jsonobject = jsonarray.getJSONObject(i);
+                type = jsonobject.getString("type");
+            }
+
+        } catch (JSONException e) {
+//            e.printStackTrace();
+            return mJSONText;
+        }
+        return type;
+    }
 
 //    private void getHttpReuslt(String account, String password) {
 //

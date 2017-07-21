@@ -99,7 +99,7 @@ public class phpConnection {
                 // 網頁內容字串
                 responseString = stringBuffer.toString();
 
-                return parseJson(responseString);
+                return responseString;
 
             } else {
                 Log.i(TAG, "Connection fail");
@@ -116,21 +116,6 @@ public class phpConnection {
         return responseString;
     }
 
-    private static String parseJson(String mJSONText) {
-        String type = "";
-        try {
 
-            JSONArray jsonarray = new JSONArray(mJSONText);
-            for (int i = 0; i < jsonarray.length(); i++) {
-                JSONObject jsonobject = jsonarray.getJSONObject(i);
-                type = jsonobject.getString("type");
-            }
-
-        } catch (JSONException e) {
-//            e.printStackTrace();
-            return mJSONText;
-        }
-        return type;
-    }
 
 }
