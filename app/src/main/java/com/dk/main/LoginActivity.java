@@ -289,8 +289,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 String result = phpConnection.createConnection(var.queryUser, key, value);
 
-                if (result.equals("user")) {
-                    Log.i(TAG, "登入成功");
+                if (result.equals("driver")) {
+                    Log.i(TAG, "司機 登入成功");
                     //data insert to database
                     SQLiteDatabase db = userDBHelper.getWritableDatabase();
                     ContentValues values = new ContentValues();

@@ -23,7 +23,7 @@ public class latest_news extends AppCompatActivity {
 
         //取代app_bar的include ， 傳Layout
         replaceInclude(R.layout.activity_latest_news);
-        
+
         TextView text = (TextView) findViewById(R.id.news_text);
         text.setText("testtest");
 
