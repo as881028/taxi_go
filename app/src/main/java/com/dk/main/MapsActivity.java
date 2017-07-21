@@ -16,6 +16,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -25,7 +26,10 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.LocationSource;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -40,12 +44,9 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener,LocationSource.OnLocationChangedListener {
 
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
-    }
 
     class Coordinate {
         protected Double dLatitude;
@@ -77,7 +78,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private final String PERMISSION_ACCESS_FINE_LOCATION = "android.permission.ACCESS_FINE_LOCATION";
 
     Timer timer = new Timer(true);
-
+    int LOCATION_SAVE_TIME_PRE_SECOND = 10;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +93,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         var = ((GlobalVar) getApplicationContext());
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+
+
         //地圖同步
         mapFragment.getMapAsync(this);
         //navigation drawer 選單內點擊
@@ -105,6 +108,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
     }
+
 
     private void initMenuBar() {
         //menu tool bar
@@ -212,13 +216,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
-
-
         mMap.getUiSettings().setZoomControlsEnabled(true);  // 右下角的放大縮小功能
         mMap.getUiSettings().setCompassEnabled(true);       // 左上角的指南針，要兩指旋轉才會出現
         mMap.getUiSettings().setMapToolbarEnabled(true);    // 右下角的導覽及開啟 Google Map功能
-
-
     }
 
 
@@ -234,18 +234,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
 
             Coordinate.setCoordinate(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-            //
-
+            //所在位置
             LatLng nowLocation = new LatLng(Coordinate.dLatitude, Coordinate.dLongitude);
             mMap.addMarker(new MarkerOptions().position(nowLocation).title("You are here!"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(nowLocation));
-            //
+            //相機定位
             CameraUpdate center = CameraUpdateFactory.newLatLngZoom(nowLocation, 15);
-
             mMap.animateCamera(center);
-
-            timer.schedule(new LocationTimerTask(), 1000, 5000);
-            changeLocation(Coordinate.dLatitude, Coordinate.dLongitude);
+            //定時回傳
+            timer.schedule(new LocationTimerTask(), 1000, LOCATION_SAVE_TIME_PRE_SECOND*1000);
+            saveLocation(Coordinate.dLatitude, Coordinate.dLongitude);
 
         } else {
             Toast.makeText(this, "偵測不到定位，請確認定位功能已開啟。", Toast.LENGTH_LONG).show();
@@ -261,7 +259,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mGoogleApiClient.connect();
     }
 
-    private void changeLocation(Double latitude, Double longitude) {
+    private void saveLocation(Double latitude, Double longitude) {
 
         mMapTask = new DriverMapTask(latitude.toString(), longitude.toString());
         mMapTask.execute((Void) null);
@@ -308,14 +306,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
     }
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.i(TAG,"Connection Google Map Fail");
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Double mLatiude = location.getLatitude();
+        Double mLongitude = location.getLongitude();
+        Coordinate.setCoordinate(mLatiude,mLongitude);
+    }
 
     class LocationTimerTask extends TimerTask {
         @Override
         public void run() {
-            changeLocation(Coordinate.dLatitude, Coordinate.dLongitude);
+            saveLocation(Coordinate.dLatitude, Coordinate.dLongitude);
+
         }
-
-
     }
 
 
