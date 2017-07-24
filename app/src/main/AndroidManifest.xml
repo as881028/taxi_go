@@ -62,14 +62,14 @@
             </intent-filter>
         </service>
 
-
         <activity
             android:name=".latest_news"
             android:label="@string/title_activity_latest_news"
-            android:theme="@style/AppTheme.NoActionBar">
-
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Personal_information"
+            android:label="@string/title_activity_personal_information"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
