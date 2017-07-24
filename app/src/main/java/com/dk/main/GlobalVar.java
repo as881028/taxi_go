@@ -7,13 +7,13 @@ import android.app.Application;
  */
 
 public class GlobalVar extends Application {
-    public Boolean debug = false;
+    public Boolean debug = true;
 
     public String phone ="";
-    public String webSiteIP = "140.128.101.210";
+    public String webSiteIP = "140.128.98.11";
     public String webPath = "/taxi_go";
     public String queryUser = "/query_user.php";
     public String  driver_location_add = "/driver_location_add.php";
-    public String test = "dasda";
+
 
 }

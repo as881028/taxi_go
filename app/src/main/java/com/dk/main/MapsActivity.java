@@ -321,6 +321,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     class LocationTimerTask extends TimerTask {
         @Override
         public void run() {
+            Log.i(TAG, Coordinate.dLatitude+ "");
+            Log.i(TAG, Coordinate.dLongitude + "");
             saveLocation(Coordinate.dLatitude, Coordinate.dLongitude);
 
         }
