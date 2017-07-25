@@ -7,36 +7,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-public class latest_news extends AppCompatActivity {
+public class order_record extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-
-        //取代app_bar的include ， 傳Layout
-        replaceInclude(R.layout.activity_latest_news);
-
+        replaceInclude(R.layout.activity_order_record);
         initMenuBar();
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
     }
-
     private void replaceInclude(int layout) {
         View include = findViewById(R.id.include_menu);
         ViewGroup parent = (ViewGroup) include.getParent();
@@ -45,7 +27,6 @@ public class latest_news extends AppCompatActivity {
         include = getLayoutInflater().inflate(layout, parent, false);
         parent.addView(include, index);
     }
-
     private void initMenuBar() {
         //menu tool bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -56,5 +37,6 @@ public class latest_news extends AppCompatActivity {
         drawer.setDrawerListener(toggle);
         toggle.syncState();
     }
+
 
 }

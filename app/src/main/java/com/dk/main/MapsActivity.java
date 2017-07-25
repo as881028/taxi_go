@@ -97,12 +97,30 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //地圖同步
         mapFragment.getMapAsync(this);
+        //navigation drawer個人資訊點擊
+        findViewById(R.id.imageButton2).setOnClickListener(new View.OnClickListener() { // i= (Button) findViewById(R.id.latest_news),   i.setOnClickListener(new View.OnClickListener()
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent();
+                i.setClass(MapsActivity.this, Personal_information.class);
+                startActivity(i);
+            }
+        });
         //navigation drawer 選單內點擊
         findViewById(R.id.latest_news).setOnClickListener(new View.OnClickListener() { // i= (Button) findViewById(R.id.latest_news),   i.setOnClickListener(new View.OnClickListener()
             @Override
             public void onClick(View v) {
                 Intent i = new Intent();
                 i.setClass(MapsActivity.this, latest_news.class);
+                startActivity(i);
+            }
+        });
+        //navigation drawer 選單內點擊接單紀錄
+        findViewById(R.id.order_record).setOnClickListener(new View.OnClickListener() { // i= (Button) findViewById(R.id.latest_news),   i.setOnClickListener(new View.OnClickListener()
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent();
+                i.setClass(MapsActivity.this, order_record.class);
                 startActivity(i);
             }
         });
