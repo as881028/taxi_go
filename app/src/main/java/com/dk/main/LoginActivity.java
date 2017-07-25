@@ -64,6 +64,7 @@ import static android.provider.BaseColumns._ID;
 import static com.dk.main.DBConstants.ACCOUNT;
 import static com.dk.main.DBConstants.PASSWORD;
 import static com.dk.main.DBConstants.TABLE_NAME;
+import static com.dk.main.DBConstants.TOKEN;
 //
 
 /**
@@ -91,6 +92,32 @@ public class LoginActivity extends AppCompatActivity {
     private View mProgressView;
     private View mLoginFormView;
     private DBHelper userDBHelper;
+    LoginDetail LoginDetail = new LoginDetail();
+
+    class LoginDetail {
+        protected String code;
+        protected String errorMsg;
+        protected String token;
+        protected String userId;
+        protected String userType;
+
+        public void setDetail(String code, String errorMsg, String token, String userId, String userType) {
+            this.code = code;
+            this.errorMsg = errorMsg;
+            this.token = token;
+            this.userId = userId;
+            this.userType = userType;
+        }
+
+        public String getUserType() {
+            return userType;
+        }
+
+        public String getUserToken() {
+            return token;
+        }
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,7 +169,11 @@ public class LoginActivity extends AppCompatActivity {
     private Cursor getCursor() {
 
         SQLiteDatabase db = userDBHelper.getReadableDatabase();
-        String[] columns = {_ID, ACCOUNT, PASSWORD};
+        String[] columns = {_ID, ACCOUNT, PASSWORD, TOKEN};
+        //從Sqlite取資料出來用法
+        //cursor.getString(1) = 第一個欄位(ACCOUNT)
+        //cursor.getString(2) = 第一個欄位(PASSWORD)
+        //cursor.getString(3) = 第一個欄位(TOKEN)
 
         Cursor cursor = db.query(TABLE_NAME, columns, null, null, null, null, null);
         if (cursor != null) {
@@ -285,20 +316,26 @@ public class LoginActivity extends AppCompatActivity {
                 ArrayList<String> key = new ArrayList<>();
                 ArrayList<String> value = new ArrayList<>();
 
-                key.add("account");
+                key.add("LoginAccount");
                 value.add(mPhone);
-                key.add("password");
+                key.add("LoginPassword");
                 value.add(mPassword);
 
-
-                String result = phpConnection.createConnection(var.queryUser, key, value);
-                              if (parseJson(result).equals("driver")) {
-                    Log.i(TAG, "司機 登入成功");
+                //取得PHP回傳值
+                String result = phpConnection.createConnection(var.validation, key, value);
+                //解析JSON
+                parseJson(result);
+                //判斷是否為司機端
+                if (LoginDetail.getUserType().equals("2")) {
+                    if (var.debug) {
+                        Log.i(TAG, "司機 登入成功");
+                    }
                     //data insert to database
                     SQLiteDatabase db = userDBHelper.getWritableDatabase();
                     ContentValues values = new ContentValues();
                     values.put(ACCOUNT, value.get(0));
                     values.put(PASSWORD, value.get(1));
+                    values.put(TOKEN, LoginDetail.getUserToken());
                     db.insert(TABLE_NAME, null, values);
 
                     var.phone = mPhone;
@@ -316,7 +353,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
-                if(var.debug)
+                if (var.debug)
                     Log.i(TAG, "Internet error");
                 return false;
             } catch (NullPointerException e) {
@@ -326,8 +363,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
             } catch (Exception e) {
-                if(var.debug)
-                    Log.i(TAG,e.toString());
+                if (var.debug)
+                    Log.i(TAG, e.toString());
             }
 //
 //            for (String credential : DUMMY_CREDENTIALS) {
@@ -363,88 +400,17 @@ public class LoginActivity extends AppCompatActivity {
             showProgress(false);
         }
     }
-    private static String parseJson(String mJSONText) {
-        String type = "";
-        try {
 
-            JSONArray jsonarray = new JSONArray(mJSONText);
-            for (int i = 0; i < jsonarray.length(); i++) {
-                JSONObject jsonobject = jsonarray.getJSONObject(i);
-                type = jsonobject.getString("type");
-            }
+    private void parseJson(String mJSONText) throws JSONException {
+        JSONObject jObject = new JSONObject(mJSONText);
+        String code = jObject.getString("Code");
+        String errorMsg = jObject.getString("ErrorMsg");
+        String token = jObject.getString("Token");
+        String userId = jObject.getString("UserId");
+        String userType = jObject.getString("UserType");
+        LoginDetail.setDetail(code, errorMsg, token, userId, userType);
 
-        } catch (JSONException e) {
-//            e.printStackTrace();
-            return mJSONText;
-        }
-        return type;
     }
 
-//    private void getHttpReuslt(String account, String password) {
-//
-//        String responseString = null;
-//        String urlString = "http://140.128.98.46/taxi_go/query_user.php";
-//        HttpURLConnection connection = null;
-//
-//        try {
-//            // 初始化 URL
-//            URL url = new URL(urlString);
-//            // 取得連線物件
-//            connection = (HttpURLConnection) url.openConnection();
-//            // 設定 request timeout
-//            connection.setReadTimeout(1500);
-//            connection.setConnectTimeout(1500);
-//            connection.setDoOutput(true);// 設置此方法,允許向伺服器輸出內容
-//
-//            // post請求的參數
-//            String data = String.format("account=%s&password=%s", account, password);
-//
-//            OutputStream out = connection.getOutputStream();// 產生一個OutputStream，用來向伺服器傳數據
-//            out.write(data.getBytes());
-//            out.flush();
-//            out.close();
-//            // 模擬 Chrome 的 user agent, 因為手機的網頁內容較不完整
-////            connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36");
-//            // 設定開啟自動轉址
-//            connection.setInstanceFollowRedirects(true);
-//
-//            // 若要求回傳 200 OK 表示成功取得網頁內容
-//            if (connection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
-//                // 讀取網頁內容
-//                InputStream inputStream = connection.getInputStream();
-//                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-//
-//                String tempStr;
-//                StringBuffer stringBuffer = new StringBuffer();
-//
-//                while ((tempStr = bufferedReader.readLine()) != null) {
-//                    stringBuffer.append(tempStr);
-//                }
-//
-//                bufferedReader.close();
-//                inputStream.close();
-//
-//                /*
-//                // 取得網頁內容類型
-//                String mime = connection.getContentType();
-//                boolean isMediaStream = false;
-//
-//                // 判斷是否為串流檔案
-//                if (mime.indexOf("audio") == 0 || mime.indexOf("video") == 0) {
-//                    isMediaStream = true;
-//                }
-//                 */
-//                // 網頁內容字串
-//                responseString = stringBuffer.toString();
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } finally {
-//            // 中斷連線
-//            if (connection != null) {
-//                connection.disconnect();
-//            }
-//        }
-//    }
 }
 
