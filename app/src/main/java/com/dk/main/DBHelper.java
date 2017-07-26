@@ -10,6 +10,7 @@ import static com.dk.main.DBConstants.TABLE_NAME;
 import static android.provider.BaseColumns._ID;
 import static com.dk.main.DBConstants.ACCOUNT;
 import static com.dk.main.DBConstants.PASSWORD;
+import static com.dk.main.DBConstants.TOKEN;
 
 /**
  * Created by DK on 2017/7/10.
@@ -17,7 +18,7 @@ import static com.dk.main.DBConstants.PASSWORD;
 
 public class DBHelper extends SQLiteOpenHelper {
     private final static String DATABASE_NAME = "taxi_go.db";
-    private final static int DATABASE_VERSION = 3;
+    private final static int DATABASE_VERSION = 4;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -29,6 +30,7 @@ public class DBHelper extends SQLiteOpenHelper {
         dropDB(db);
         final String INIT_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
                 _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                TOKEN + " CHAR , " +
                 ACCOUNT + " CHAR UNIQUE, " +
                 PASSWORD + " CHAR);";
         db.execSQL(INIT_TABLE);

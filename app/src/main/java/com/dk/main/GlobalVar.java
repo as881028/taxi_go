@@ -10,9 +10,10 @@ public class GlobalVar extends Application {
     public Boolean debug = true;
 
     public String phone ="";
-    public String webSiteIP = "140.128.98.11";
-    public String webPath = "/taxi_go";
-    public String queryUser = "/query_user.php";
+    public String webSiteIP = "140.128.98.12";
+    public String webPath = "/taxi_go/api";
+    public String validation = "/validation";
+    public String queryUser = "/query_user";
     public String  driver_location_add = "/driver_location_add.php";
 
 

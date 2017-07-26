@@ -98,14 +98,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //地圖同步
         mapFragment.getMapAsync(this);
         //navigation drawer個人資訊點擊
-        findViewById(R.id.imageButton2).setOnClickListener(new View.OnClickListener() { // i= (Button) findViewById(R.id.latest_news),   i.setOnClickListener(new View.OnClickListener()
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent();
-                i.setClass(MapsActivity.this, Personal_information.class);
-                startActivity(i);
-            }
-        });
+//        findViewById(R.id.imageButton2).setOnClickListener(new View.OnClickListener() { // i= (Button) findViewById(R.id.latest_news),   i.setOnClickListener(new View.OnClickListener()
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent();
+//                i.setClass(MapsActivity.this, Personal_information.class);
+//                startActivity(i);
+//            }
+//        });
         //navigation drawer 選單內點擊
         findViewById(R.id.latest_news).setOnClickListener(new View.OnClickListener() { // i= (Button) findViewById(R.id.latest_news),   i.setOnClickListener(new View.OnClickListener()
             @Override
@@ -116,14 +116,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
         //navigation drawer 選單內點擊接單紀錄
-        findViewById(R.id.order_record).setOnClickListener(new View.OnClickListener() { // i= (Button) findViewById(R.id.latest_news),   i.setOnClickListener(new View.OnClickListener()
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent();
-                i.setClass(MapsActivity.this, order_record.class);
-                startActivity(i);
-            }
-        });
+//        findViewById(R.id.order_record).setOnClickListener(new View.OnClickListener() { // i= (Button) findViewById(R.id.latest_news),   i.setOnClickListener(new View.OnClickListener()
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent();
+//                i.setClass(MapsActivity.this, order_record.class);
+//                startActivity(i);
+//            }
+//        });
 
     }
 
@@ -261,7 +261,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.animateCamera(center);
             //定時回傳
             timer.schedule(new LocationTimerTask(), 1000, LOCATION_SAVE_TIME_PRE_SECOND*1000);
-            saveLocation(Coordinate.dLatitude, Coordinate.dLongitude);
+//            saveLocation(Coordinate.dLatitude, Coordinate.dLongitude);
 
         } else {
             Toast.makeText(this, "偵測不到定位，請確認定位功能已開啟。", Toast.LENGTH_LONG).show();
@@ -341,7 +341,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         public void run() {
             Log.i(TAG, Coordinate.dLatitude+ "");
             Log.i(TAG, Coordinate.dLongitude + "");
-            saveLocation(Coordinate.dLatitude, Coordinate.dLongitude);
+//            saveLocation(Coordinate.dLatitude, Coordinate.dLongitude);
 
         }
     }
