@@ -26,4 +26,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="title_activity_personal_information">Personal_information</string>
+    <string name="title_activity_order_record">order_record</string>
+    <string name="large_text">text</string>
 </resources>
