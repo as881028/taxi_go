@@ -83,7 +83,7 @@
                 android:textSize="20dp" />
 
             <Button
-                android:id="@+id/reservation"
+                android:id="@+id/reservation_Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -105,7 +105,7 @@
                 android:textSize="20dp" />
 
             <Button
-                android:id="@+id/service_center"
+                android:id="@+id/service_center_Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

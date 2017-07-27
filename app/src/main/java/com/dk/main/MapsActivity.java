@@ -113,7 +113,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(i);
             }
         });
-        //navigation drawer 選單內點擊
+        //navigation drawer 選單內點擊最新消息
         findViewById(R.id.latest_news).setOnClickListener(new View.OnClickListener() { // i= (Button) findViewById(R.id.latest_news),   i.setOnClickListener(new View.OnClickListener()
             @Override
             public void onClick(View v) {
@@ -122,7 +122,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(i);
             }
         });
-//        navigation drawer 選單內點擊接單紀錄
+        //navigation drawer 選單內點擊接單紀錄
         findViewById(R.id.order_record).setOnClickListener(new View.OnClickListener() { // i= (Button) findViewById(R.id.latest_news),   i.setOnClickListener(new View.OnClickListener()
             @Override
             public void onClick(View v) {
@@ -131,7 +131,27 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(i);
             }
         });
-    }
+        //navigation drawer 選單內點擊預約
+        findViewById(R.id.reservation_Button).setOnClickListener(new View.OnClickListener() { // i= (Button) findViewById(R.id.latest_news),   i.setOnClickListener(new View.OnClickListener()
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent();
+                i.setClass(MapsActivity.this, reservation.class);
+                startActivity(i);
+            }
+        });
+        //navigation drawer 選單內點擊服務中心
+        findViewById(R.id.service_center_Button).setOnClickListener(new View.OnClickListener() { // i= (Button) findViewById(R.id.latest_news),   i.setOnClickListener(new View.OnClickListener()
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent();
+                i.setClass(MapsActivity.this, service_center.class);
+                startActivity(i);
+            }
+        });
+
+
+}
 
 
     private void initMenuBar() {

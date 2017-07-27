@@ -29,4 +29,8 @@
     <string name="title_activity_personal_information">Personal_information</string>
     <string name="title_activity_order_record">order_record</string>
     <string name="large_text">text</string>
+    <string name="title_activity_reservation">reservation</string>
+    <string name="title_activity_service_center">service_center</string>
+    <string name="title_activity_income_record">income_record</string>
+    <string name="title_activity_opinion">opinion</string>
 </resources>
