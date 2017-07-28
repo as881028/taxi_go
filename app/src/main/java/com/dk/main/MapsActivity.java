@@ -11,10 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -44,8 +40,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener,LocationSource.OnLocationChangedListener {
-
+public class MapsActivity extends BaseActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener, LocationSource.OnLocationChangedListener {
 
 
     class Coordinate {
@@ -79,72 +74,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     Timer timer = new Timer(true);
     int LOCATION_SAVE_TIME_PRE_SECOND = 10;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
+        setMenuLayout();
 
-        //畫面不關
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-        initMenuBar();
-        //
+        //google api connect
         buildGoogleApiClient();
         var = ((GlobalVar) getApplicationContext());
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-
-
         //地圖同步
         mapFragment.getMapAsync(this);
 
-        menu_click();
-    }
-
-
-    
-    private void menu_click() {
-        //navigation drawer個人資訊點擊
-        findViewById(R.id.imageButton2).setOnClickListener(new View.OnClickListener() { // i= (Button) findViewById(R.id.latest_news),   i.setOnClickListener(new View.OnClickListener()
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent();
-                i.setClass(MapsActivity.this, Personal_information.class);
-                startActivity(i);
-            }
-        });
-        //navigation drawer 選單內點擊
-        findViewById(R.id.latest_news).setOnClickListener(new View.OnClickListener() { // i= (Button) findViewById(R.id.latest_news),   i.setOnClickListener(new View.OnClickListener()
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent();
-                i.setClass(MapsActivity.this, latest_news.class);
-                startActivity(i);
-            }
-        });
-//        navigation drawer 選單內點擊接單紀錄
-        findViewById(R.id.order_record).setOnClickListener(new View.OnClickListener() { // i= (Button) findViewById(R.id.latest_news),   i.setOnClickListener(new View.OnClickListener()
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent();
-                i.setClass(MapsActivity.this, order_record.class);
-                startActivity(i);
-            }
-        });
-    }
-
-
-    private void initMenuBar() {
-        //menu tool bar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
     }
 
 
@@ -266,7 +209,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             CameraUpdate center = CameraUpdateFactory.newLatLngZoom(nowLocation, 15);
             mMap.animateCamera(center);
             //定時回傳
-            timer.schedule(new LocationTimerTask(), 1000, LOCATION_SAVE_TIME_PRE_SECOND*1000);
+            timer.schedule(new LocationTimerTask(), 1000, LOCATION_SAVE_TIME_PRE_SECOND * 1000);
 //            saveLocation(Coordinate.dLatitude, Coordinate.dLongitude);
 
         } else {
@@ -330,22 +273,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
     }
+
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.i(TAG,"Connection Google Map Fail");
+        Log.i(TAG, "Connection Google Map Fail");
     }
 
     @Override
     public void onLocationChanged(Location location) {
         Double mLatiude = location.getLatitude();
         Double mLongitude = location.getLongitude();
-        Coordinate.setCoordinate(mLatiude,mLongitude);
+        Coordinate.setCoordinate(mLatiude, mLongitude);
     }
 
     class LocationTimerTask extends TimerTask {
         @Override
         public void run() {
-            Log.i(TAG, Coordinate.dLatitude+ "");
+            Log.i(TAG, Coordinate.dLatitude + "");
             Log.i(TAG, Coordinate.dLongitude + "");
 //            saveLocation(Coordinate.dLatitude, Coordinate.dLongitude);
 
