@@ -10,33 +10,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class income_record extends AppCompatActivity {
+public class IncomeRecord extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
-        replaceInclude(R.layout.activity_income_record);
-        initMenuBar();
+        setMenuLayout(R.layout.activity_income_record);
     }
-    private void replaceInclude(int layout) {
-        View include = findViewById(R.id.include_menu);
-        ViewGroup parent = (ViewGroup) include.getParent();
-        int index = parent.indexOfChild(include);
-        parent.removeView(include);
-        include = getLayoutInflater().inflate(layout, parent, false);
-        parent.addView(include, index);
-    }
-    private void initMenuBar() {
-        //menu tool bar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-    }
-
 
 }

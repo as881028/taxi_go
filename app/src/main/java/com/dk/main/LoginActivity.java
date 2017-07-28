@@ -51,6 +51,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -65,12 +67,13 @@ import static com.dk.main.DBConstants.ACCOUNT;
 import static com.dk.main.DBConstants.PASSWORD;
 import static com.dk.main.DBConstants.TABLE_NAME;
 import static com.dk.main.DBConstants.TOKEN;
+import static com.dk.main.DBConstants.USERID;
 //
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
@@ -81,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
+    private HttpPostTask mAuthTask = null;
 
     private GlobalVar var;
 
@@ -91,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private DBHelper userDBHelper;
+    //    private DBHelper userDBHelper;
     LoginDetail LoginDetail = new LoginDetail();
 
     class LoginDetail {
@@ -110,11 +113,15 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         public String getUserType() {
-            return userType;
+            return this.userType;
         }
 
         public String getUserToken() {
-            return token;
+            return this.token;
+        }
+
+        public String getUserID() {
+            return this.userId;
         }
 
     }
@@ -153,37 +160,8 @@ public class LoginActivity extends AppCompatActivity {
         });
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-
-
     }
 
-    private void openDatabase() {
-        Log.i(TAG, "openDatabase");
-        userDBHelper = new DBHelper(this);
-    }
-
-    private void closeDatabase() {
-        userDBHelper.close();
-    }
-
-    private Cursor getCursor() {
-
-        SQLiteDatabase db = userDBHelper.getReadableDatabase();
-        String[] columns = {_ID, ACCOUNT, PASSWORD, TOKEN};
-        //從Sqlite取資料出來用法
-        //cursor.getString(1) = 第一個欄位(ACCOUNT)
-        //cursor.getString(2) = 第一個欄位(PASSWORD)
-        //cursor.getString(3) = 第一個欄位(TOKEN)
-
-        Cursor cursor = db.query(TABLE_NAME, columns, null, null, null, null, null);
-        if (cursor != null) {
-            startManagingCursor(cursor);
-
-        }
-
-
-        return cursor;
-    }
 
     private void setViewData() {
         Cursor cursor = getCursor();
@@ -194,7 +172,6 @@ public class LoginActivity extends AppCompatActivity {
                 Log.i(TAG, account);
                 Log.i(TAG, password);
             }
-
             mPhoneView.setText(account);
             mPasswordView.setText(password);
 
@@ -246,8 +223,10 @@ public class LoginActivity extends AppCompatActivity {
             // perform the user login attempt.
             showProgress(true);
 
-
-            mAuthTask = new UserLoginTask(phone, password);
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("LoginAccount", phone);
+            map.put("LoginPassword", password);
+            mAuthTask = new HttpPostTask(map);
             mAuthTask.execute((Void) null);
         }
     }
@@ -297,14 +276,13 @@ public class LoginActivity extends AppCompatActivity {
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class HttpPostTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mPhone;
-        private final String mPassword;
+        private final Map<String, String> mMap;
 
-        UserLoginTask(String phone, String password) {
-            mPhone = phone;
-            mPassword = password;
+
+        HttpPostTask(Map<String, String> map) {
+            mMap = map;
         }
 
         @Override
@@ -313,35 +291,33 @@ public class LoginActivity extends AppCompatActivity {
 
             try {
                 // Simulate network access.
-                ArrayList<String> key = new ArrayList<>();
-                ArrayList<String> value = new ArrayList<>();
-
-                key.add("LoginAccount");
-                value.add(mPhone);
-                key.add("LoginPassword");
-                value.add(mPassword);
 
                 //取得PHP回傳值
-                String result = phpConnection.createConnection(var.validation, key, value);
+//                String result = phpConnection.createConnection(var.validation, key, value);
+
+                String result = phpConnection.createConnection(var.validation, mMap);
+                Log.i(TAG, result);
                 //解析JSON
                 parseJson(result);
                 //判斷是否為司機端
+                Intent intent = new Intent();
                 if (LoginDetail.getUserType().equals("2")) {
                     if (var.debug) {
                         Log.i(TAG, "司機 登入成功");
                     }
+
                     //data insert to database
                     SQLiteDatabase db = userDBHelper.getWritableDatabase();
                     ContentValues values = new ContentValues();
-                    values.put(ACCOUNT, value.get(0));
-                    values.put(PASSWORD, value.get(1));
+                    values.put(ACCOUNT, mMap.get("LoginAccount"));
+                    values.put(PASSWORD, mMap.get("LoginPassword"));
                     values.put(TOKEN, LoginDetail.getUserToken());
+                    values.put(USERID, LoginDetail.getUserID());
+
                     db.insert(TABLE_NAME, null, values);
 
-                    var.phone = mPhone;
 
                     // 換頁 to MapsActivity
-                    Intent intent = new Intent();
                     intent.setClass(LoginActivity.this, MapsActivity.class);
                     startActivity(intent);
                     LoginActivity.this.finish();
@@ -349,7 +325,13 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 } else {
-                    Log.i(TAG, "登入失敗");
+                    if (var.debug) {
+                        Log.i(TAG, "登入失敗,DEBUG MODE ON,直接登入");
+                        //跳過登入
+                        intent.setClass(LoginActivity.this, MapsActivity.class);
+                        startActivity(intent);
+                        LoginActivity.this.finish();
+                    }
                 }
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
@@ -359,6 +341,8 @@ public class LoginActivity extends AppCompatActivity {
             } catch (NullPointerException e) {
                 if (var.debug) {
                     Log.i(TAG, "NULLPOINT");
+                    Log.i(TAG, e.toString());
+
                     return false;
                 }
 
@@ -366,16 +350,6 @@ public class LoginActivity extends AppCompatActivity {
                 if (var.debug)
                     Log.i(TAG, e.toString());
             }
-//
-//            for (String credential : DUMMY_CREDENTIALS) {
-//                String[] pieces = credential.split(":");
-//
-//                if (pieces[0].equals(mPhone)) {
-//                    // Account exists, return true if the password matches.
-//
-//                    return pieces[1].equals(mPassword);
-//                }
-//            }
 
             // TODO: register the new account here.
             return true;

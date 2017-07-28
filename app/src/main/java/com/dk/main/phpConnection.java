@@ -18,9 +18,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import static android.R.attr.key;
+import static android.R.attr.value;
 import static android.R.id.input;
 
 /**
@@ -30,7 +34,7 @@ import static android.R.id.input;
 public class phpConnection {
 
 
-    public static String createConnection(String webFunction, ArrayList<String> key, ArrayList<String> value) {
+    public static String createConnection(String webFunction, Map<String, String> map) {
 
         String TAG = "phpConnection";
         String responseString = null;
@@ -41,6 +45,7 @@ public class phpConnection {
         String webPath = var.webPath;
         String urlString = String.format("http://%s%s%s", webSiteIP, webPath, webFunction);
         //
+
 
         HttpURLConnection connection = null;
 
@@ -62,20 +67,26 @@ public class phpConnection {
 
             String data = "";
 //            account=%s&password=%s
-            for (int i = 0; i < key.size(); i++) {
-                data += String.format("%s=%s", key.get(i), value.get(i));
-                if (i != key.size() - 1) {
-                    data += "&";
-                }
+            Set<Map.Entry<String, String>> set = map.entrySet();
+            for (Map.Entry<String, String> entry : set)
+
+            {
+                data += String.format("%s=%s", entry.getKey(), entry.getValue());
+                data += "&";
             }
+//            for (int i = 0; i < key.size(); i++) {
+//                data += String.format("%s=%s", key.get(i), value.get(i));
+//                if (i != key.size() - 1) {
+//                    data += "&";
+//                }
+//            }
 
 
             OutputStream out = connection.getOutputStream();// 產生一個OutputStream，用來向伺服器傳數據
             out.write(data.getBytes());
             out.flush();
             out.close();
-            // 模擬 Chrome 的 user agent, 因為手機的網頁內容較不完整
-//            connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36");
+
             // 設定開啟自動轉址
             connection.setInstanceFollowRedirects(true);
 
@@ -83,8 +94,8 @@ public class phpConnection {
             if (connection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
                 // 讀取網頁內容
                 InputStream inputStream = connection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
                 String tempStr;
                 StringBuffer stringBuffer = new StringBuffer();
 
@@ -115,7 +126,6 @@ public class phpConnection {
         }
         return responseString;
     }
-
 
 
 }

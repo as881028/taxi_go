@@ -13,7 +13,8 @@ public class GlobalVar extends Application {
     public String webSiteIP = "140.128.98.12";
     public String webPath = "/taxi_go/api";
     public String validation = "/validation";
-    public String queryUser = "/query_user";
+    public String queryUser = "/query_member";
+    public String queryDriver = "/query_driver";
     public String  driver_location_add = "/driver_location_add.php";
 
 

@@ -63,34 +63,38 @@
         </service>
 
         <activity
-            android:name=".latest_news"
+            android:name=".LatestNews"
             android:label="@string/title_activity_latest_news"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Personal_information"
+            android:name=".PersonalInformation"
             android:label="@string/title_activity_personal_information"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".order_record"
+            android:name=".OrderRecord"
             android:label="@string/title_activity_order_record"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".reservation"
+            android:name=".Reservation"
             android:label="@string/title_activity_reservation"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".service_center"
+            android:name=".ServiceCenter"
             android:label="@string/title_activity_service_center"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".income_record"
+            android:name=".IncomeRecord"
             android:label="@string/title_activity_income_record"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".opinion"
+            android:name=".Opinion"
             android:label="@string/title_activity_opinion"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".modify_personal_information"></activity>
+        <activity
+            android:name=".ModifyPersonalInformation"
+            android:label="@string/title_activity_personal_information"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
     </application>
 
 </manifest>

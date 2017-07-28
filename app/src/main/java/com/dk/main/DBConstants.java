@@ -10,6 +10,7 @@ public interface DBConstants extends BaseColumns {
     public static final String ACCOUNT = "account";
     public static final String PASSWORD = "password";
     public static final String  TOKEN = "token";
+    public static final String  USERID = "uid";
 
 
 

@@ -257,9 +257,9 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Co
                 value.add(var.phone);
                 value.add(mLatitude);
                 value.add(mLongitude);
-                String result = phpConnection.createConnection(var.driver_location_add, key, value);
+//                String result = phpConnection.createConnection(var.driver_location_add, key, value);
                 if (var.debug) {
-                    Log.i(TAG, result);
+//                    Log.i(TAG, result);
                 }
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
