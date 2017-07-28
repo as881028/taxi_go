@@ -51,7 +51,6 @@
             android:label="@string/title_activity_maps"
             android:theme="@style/AppTheme.NoActionBar" />
 
-
         <service android:name=".InstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
@@ -74,10 +73,24 @@
         <activity
             android:name=".order_record"
             android:label="@string/title_activity_order_record"
-            android:theme="@style/AppTheme.NoActionBar">
-
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".reservation"
+            android:label="@string/title_activity_reservation"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".service_center"
+            android:label="@string/title_activity_service_center"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".income_record"
+            android:label="@string/title_activity_income_record"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".opinion"
+            android:label="@string/title_activity_opinion"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".modify_personal_information"></activity>
     </application>
 
 </manifest>
