@@ -14,17 +14,14 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
-public class latest_news extends AppCompatActivity {
+public class latest_news extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
+        setMenuLayout(R.layout.activity_latest_news);
 
-        //取代app_bar的include ， 傳Layout
-        replaceInclude(R.layout.activity_latest_news);
 
-        initMenuBar();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -37,24 +34,9 @@ public class latest_news extends AppCompatActivity {
 
     }
 
-    private void replaceInclude(int layout) {
-        View include = findViewById(R.id.include_menu);
-        ViewGroup parent = (ViewGroup) include.getParent();
-        int index = parent.indexOfChild(include);
-        parent.removeView(include);
-        include = getLayoutInflater().inflate(layout, parent, false);
-        parent.addView(include, index);
-    }
 
-    private void initMenuBar() {
-        //menu tool bar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-    }
+
+
+
 
 }
