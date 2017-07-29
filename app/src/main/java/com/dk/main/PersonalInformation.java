@@ -73,6 +73,14 @@ public class PersonalInformation extends MenuBaseActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent();
+                i.setClass(PersonalInformation.this, IncomeRecord.class);
+                startActivity(i);
+            }
+        });
+        findViewById(R.id.opinion_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent();
                 i.setClass(PersonalInformation.this, Opinion.class);
                 startActivity(i);
             }
