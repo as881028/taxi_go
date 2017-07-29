@@ -182,6 +182,24 @@ public class BaseActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        findViewById(R.id.service_center_Button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent();
+                i.setClass(getApplicationContext(), ServiceCenter.class);
+                startActivity(i);
+            }
+        });
+        findViewById(R.id.reservation_Button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent();
+                i.setClass(getApplicationContext(), Reservation.class);
+                startActivity(i);
+            }
+        });
 
         TextView tvDriverName = (TextView) findViewById(R.id.driver_name);
         TextView tvDriverNum = (TextView) findViewById(R.id.driver_number);
