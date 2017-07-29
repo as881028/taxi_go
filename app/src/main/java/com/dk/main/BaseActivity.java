@@ -134,6 +134,7 @@ public class BaseActivity extends AppCompatActivity {
         replaceInclude(layout);
         menu_click();
         initMenuBar();
+        menu_text_set();
     }
 
 
@@ -146,9 +147,17 @@ public class BaseActivity extends AppCompatActivity {
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+            public void onDrawerClosed(View view) {
+
+            }
+
+            public void onDrawerOpened(View drawerView) {
+                menu_text_set();
+            }
+
+        };
         drawer.setDrawerListener(toggle);
-        drawer.closeDrawers();
         toggle.syncState();
     }
 
@@ -158,7 +167,7 @@ public class BaseActivity extends AppCompatActivity {
 
     //MENU相關事件
     public void menu_click() {
-        GlobalVar var = (GlobalVar) getApplicationContext();
+
         //navigation drawer個人資訊點擊
         findViewById(R.id.imageButton2).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,16 +200,18 @@ public class BaseActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    public void menu_text_set() {
+        GlobalVar var = (GlobalVar) getApplicationContext();
+
         TextView tvDriverName = (TextView) findViewById(R.id.driver_name);
         TextView tvDriverNum = (TextView) findViewById(R.id.driver_number);
         TextView tvDriverTeam = (TextView) findViewById(R.id.taxiteam_name);
-
         if (var.PersonalDetail.getName() != null) {
             tvDriverName.setText("姓名: " + var.PersonalDetail.getName());
             tvDriverNum.setText("呼號: " + var.PersonalDetail.getCallNum());
             tvDriverTeam.setText("車隊: " + var.PersonalDetail.getTeam());
         }
-
-
     }
 }

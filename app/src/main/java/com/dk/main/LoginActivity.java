@@ -407,6 +407,7 @@ public class LoginActivity extends BaseActivity {
                 //取得PHP回傳值
                 result = phpConnection.createConnection(mUrl, mMap);
                 parsePersonalJson(result);
+
                 Log.i(TAG, result);
 
             } catch (NullPointerException e) {
@@ -445,6 +446,8 @@ public class LoginActivity extends BaseActivity {
         var.PersonalDetail.setName(name);
         var.PersonalDetail.setTeam(team);
         var.PersonalDetail.setCallNum(callNum);
+
+       
 
 
     }

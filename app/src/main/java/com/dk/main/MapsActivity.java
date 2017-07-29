@@ -147,7 +147,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Co
     protected void onStart() {
         super.onStart();
         closeDrawers((DrawerLayout) findViewById(R.id.drawer_layout));
-        menu_click();
+        menu_text_set();
 
         //檢查權限 > v23就等待權限
         //<23直接連接地圖
