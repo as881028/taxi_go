@@ -7,7 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class OrderRecord extends BaseActivity {
+public class OrderRecord extends MenuBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

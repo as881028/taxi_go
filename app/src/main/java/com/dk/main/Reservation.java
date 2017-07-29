@@ -10,7 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class Reservation extends BaseActivity {
+public class Reservation extends MenuBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

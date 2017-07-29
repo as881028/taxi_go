@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -97,6 +98,7 @@ public class BaseActivity extends AppCompatActivity {
         return cursor;
     }
 
+
     //取代include_menu 用來替換畫面
     public void replaceInclude(int layout) {
 
@@ -116,11 +118,10 @@ public class BaseActivity extends AppCompatActivity {
 
         //畫面不關
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-
         menu_click();
         initMenuBar();
     }
+
 
     //初始化相關MENU元件 及 相關事件
     public void setMenuLayout(int layout) {
@@ -135,6 +136,7 @@ public class BaseActivity extends AppCompatActivity {
         initMenuBar();
     }
 
+
     //MENU必要的宣告
     public void initMenuBar() {
         //menu tool bar
@@ -146,7 +148,12 @@ public class BaseActivity extends AppCompatActivity {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
+        drawer.closeDrawers();
         toggle.syncState();
+    }
+
+    public void closeDrawers(DrawerLayout drawer) {
+        drawer.closeDrawers();
     }
 
     //MENU相關事件
@@ -183,18 +190,16 @@ public class BaseActivity extends AppCompatActivity {
             }
         });
 
+
         TextView tvDriverName = (TextView) findViewById(R.id.driver_name);
         TextView tvDriverNum = (TextView) findViewById(R.id.driver_number);
         TextView tvDriverTeam = (TextView) findViewById(R.id.taxiteam_name);
 
-        if(var.PersonalDetail.getName() != null)
-        {
+        if (var.PersonalDetail.getName() != null) {
             tvDriverName.setText("姓名: " + var.PersonalDetail.getName());
             tvDriverNum.setText("呼號: " + var.PersonalDetail.getCallNum());
             tvDriverTeam.setText("車隊: " + var.PersonalDetail.getTeam());
         }
-
-
 
 
     }

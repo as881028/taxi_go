@@ -11,7 +11,9 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -144,6 +146,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Co
     @Override
     protected void onStart() {
         super.onStart();
+        closeDrawers((DrawerLayout) findViewById(R.id.drawer_layout));
+        menu_click();
 
         //檢查權限 > v23就等待權限
         //<23直接連接地圖
@@ -210,7 +214,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Co
             CameraUpdate center = CameraUpdateFactory.newLatLngZoom(nowLocation, 15);
             mMap.animateCamera(center);
             //定時回傳
-            timer.schedule(new LocationTimerTask(), 1000, LOCATION_SAVE_TIME_PRE_SECOND * 1000);
+//            timer.schedule(new LocationTimerTask(), 1000, LOCATION_SAVE_TIME_PRE_SECOND * 1000);
 //            saveLocation(Coordinate.dLatitude, Coordinate.dLongitude);
 
         } else {

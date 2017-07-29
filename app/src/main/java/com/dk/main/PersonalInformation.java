@@ -27,7 +27,7 @@ import static com.dk.main.DBConstants.TABLE_NAME;
 import static com.dk.main.DBConstants.TOKEN;
 import static com.dk.main.DBConstants.USERID;
 
-public class PersonalInformation extends BaseActivity {
+public class PersonalInformation extends MenuBaseActivity {
     Intent i = new Intent();
     private String mConnResult = null;
 
@@ -49,15 +49,6 @@ public class PersonalInformation extends BaseActivity {
 //        openDatabase();
         var = ((GlobalVar) getApplicationContext());
         PersonalDetail = var.PersonalDetail;
-//
-//        Cursor cursor = getCursor();
-//
-//        while (cursor.moveToNext()) {
-//            uid = cursor.getString(4);
-//            token = cursor.getString(3);
-//            Log.i(TAG, uid);
-//            Log.i(TAG, token);
-//        }
 
 
         tvCallNum.setText(PersonalDetail.getCallNum());

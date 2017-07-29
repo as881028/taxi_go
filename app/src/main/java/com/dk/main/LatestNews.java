@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
-public class LatestNews extends BaseActivity {
+public class LatestNews extends MenuBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
