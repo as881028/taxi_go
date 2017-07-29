@@ -16,6 +16,6 @@ public class GlobalVar extends Application {
     public String queryUser = "/query_member";
     public String queryDriver = "/query_driver";
     public String  driver_location_add = "/driver_location_add.php";
-
+    BaseActivity.PersonalDetail PersonalDetail ;
 
 }

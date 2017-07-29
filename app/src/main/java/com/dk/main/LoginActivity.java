@@ -53,6 +53,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -84,8 +85,8 @@ public class LoginActivity extends BaseActivity {
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private HttpPostTask mAuthTask = null;
-
+    private HttpPostLoginTask mAuthTask = null;
+    private String mPersonalResult = null;
     private GlobalVar var;
 
     protected static final String TAG = "LoginActivity";
@@ -130,14 +131,16 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        var = (GlobalVar) getApplicationContext();
         openDatabase();
         initView();
-        var = ((GlobalVar) getApplicationContext());
+        var.PersonalDetail = new PersonalDetail();
+
         // set last user account and password (SQLite)
         setViewData();
     }
 
-
+    //宣告相關物件
     private void initView() {
         mPhoneView = (EditText) findViewById(R.id.phone);
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -226,11 +229,13 @@ public class LoginActivity extends BaseActivity {
             Map<String, String> map = new HashMap<String, String>();
             map.put("LoginAccount", phone);
             map.put("LoginPassword", password);
-            mAuthTask = new HttpPostTask(map);
+            mAuthTask = new HttpPostLoginTask(map);
             mAuthTask.execute((Void) null);
+
         }
     }
 
+    //驗證密碼格式
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
         return password.length() > 4 && password.length() < 16;
@@ -272,16 +277,13 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class HttpPostTask extends AsyncTask<Void, Void, Boolean> {
+    //登入用的TASK
+    public class HttpPostLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final Map<String, String> mMap;
 
 
-        HttpPostTask(Map<String, String> map) {
+        HttpPostLoginTask(Map<String, String> map) {
             mMap = map;
         }
 
@@ -313,7 +315,6 @@ public class LoginActivity extends BaseActivity {
                     values.put(PASSWORD, mMap.get("LoginPassword"));
                     values.put(TOKEN, LoginDetail.getUserToken());
                     values.put(USERID, LoginDetail.getUserID());
-
                     db.insert(TABLE_NAME, null, values);
 
 
@@ -358,9 +359,10 @@ public class LoginActivity extends BaseActivity {
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-            showProgress(false);
-
+//            showProgress(false);
+            //登入完成後
             if (success) {
+                getPersonalData();
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
@@ -386,5 +388,84 @@ public class LoginActivity extends BaseActivity {
 
     }
 
+    //讀取個人資料
+    public class HttpPostPersonalTask extends AsyncTask<Void, Void, String> {
+
+        private final Map<String, String> mMap;
+        private final String mUrl;
+
+        HttpPostPersonalTask(String url, Map<String, String> map) {
+            mMap = map;
+            mUrl = url;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+            String result = "";
+            try {
+                //取得PHP回傳值
+                result = phpConnection.createConnection(mUrl, mMap);
+                parsePersonalJson(result);
+                Log.i(TAG, result);
+
+            } catch (NullPointerException e) {
+                if (var.debug) {
+                    Log.i(TAG, "Null Point");
+                    return null;
+                }
+            } catch (Exception e) {
+                if (var.debug)
+                    Log.i(TAG, e.toString());
+            }
+            // TODO: register the new account here.
+            return result;
+        }
+
+
+        @Override
+        protected void onCancelled() {
+            mAuthTask = null;
+            showProgress(false);
+        }
+
+    }
+
+    //
+    private void parsePersonalJson(String mJSONText) throws JSONException {
+        JSONObject jObject = new JSONObject(mJSONText);
+        String code = jObject.getString("Code");
+        String userArray = jObject.getString("UserArray");
+        String name = new JSONObject(new JSONObject(mJSONText).getString("UserArray")).getString("Name");
+        String team = new JSONObject(new JSONObject(mJSONText).getString("UserArray")).getString("Team");
+        String callNum = new JSONObject(new JSONObject(mJSONText).getString("UserArray")).getString("CallNum");
+        String picture = new JSONObject(new JSONObject(mJSONText).getString("UserArray")).getString("Picture");
+
+        var.PersonalDetail.setDetail(code, userArray);
+        var.PersonalDetail.setName(name);
+        var.PersonalDetail.setTeam(team);
+        var.PersonalDetail.setCallNum(callNum);
+
+
+    }
+
+    private void getPersonalData() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("Token", LoginDetail.getUserToken());
+        map.put("UserID", LoginDetail.getUserID());
+        String url = var.queryDriver;
+
+        try {
+            mPersonalResult = new HttpPostPersonalTask(url, map).execute().get();
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+
+
+    }
 }
 

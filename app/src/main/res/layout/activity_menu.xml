@@ -24,6 +24,7 @@
 
         <include
             layout="@layout/nav_header_menu_activity"
+            android:id="@+id/include_nav"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />

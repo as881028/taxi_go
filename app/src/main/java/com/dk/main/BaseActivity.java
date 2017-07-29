@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import static android.provider.BaseColumns._ID;
 import static com.dk.main.DBConstants.ACCOUNT;
@@ -25,9 +26,52 @@ import static com.dk.main.DBConstants.USERID;
  */
 
 public class BaseActivity extends AppCompatActivity {
-    private GlobalVar var;
+
     public DBHelper userDBHelper;
 
+    //個人資料物件
+    class PersonalDetail {
+        protected String code;
+        protected String userArray;
+        protected String name;
+        protected String team;
+        protected String callNum;
+        protected String setPicture;
+
+
+        void setDetail(String code, String UserArray) {
+            this.code = code;
+            this.userArray = UserArray;
+        }
+
+        String getUserArray() {
+            return this.userArray;
+        }
+
+        void setName(String name) {
+            this.name = name;
+        }
+
+        String getName() {
+            return this.name;
+        }
+
+        void setTeam(String team) {
+            this.team = team;
+        }
+
+        String getTeam() {
+            return this.team;
+        }
+
+        void setCallNum(String callNum) {
+            this.callNum = callNum;
+        }
+
+        String getCallNum() {
+            return this.callNum;
+        }
+    }
 
     public void openDatabase() {
         userDBHelper = new DBHelper(this);
@@ -40,7 +84,7 @@ public class BaseActivity extends AppCompatActivity {
 
     public Cursor getCursor() {
         SQLiteDatabase db = userDBHelper.getReadableDatabase();
-        String[] columns = {_ID, ACCOUNT, PASSWORD, TOKEN,USERID};
+        String[] columns = {_ID, ACCOUNT, PASSWORD, TOKEN, USERID};
         //從Sqlite取資料出來用法
         //cursor.getString(1) = 第一個欄位(ACCOUNT)
         //cursor.getString(2) = 第一個欄位(PASSWORD)
@@ -52,6 +96,7 @@ public class BaseActivity extends AppCompatActivity {
         }
         return cursor;
     }
+
     //取代include_menu 用來替換畫面
     public void replaceInclude(int layout) {
 
@@ -106,6 +151,7 @@ public class BaseActivity extends AppCompatActivity {
 
     //MENU相關事件
     public void menu_click() {
+        GlobalVar var = (GlobalVar) getApplicationContext();
         //navigation drawer個人資訊點擊
         findViewById(R.id.imageButton2).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,5 +182,20 @@ public class BaseActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        TextView tvDriverName = (TextView) findViewById(R.id.driver_name);
+        TextView tvDriverNum = (TextView) findViewById(R.id.driver_number);
+        TextView tvDriverTeam = (TextView) findViewById(R.id.taxiteam_name);
+
+        if(var.PersonalDetail.getName() != null)
+        {
+            tvDriverName.setText("姓名: " + var.PersonalDetail.getName());
+            tvDriverNum.setText("呼號: " + var.PersonalDetail.getCallNum());
+            tvDriverTeam.setText("車隊: " + var.PersonalDetail.getTeam());
+        }
+
+
+
+
     }
 }

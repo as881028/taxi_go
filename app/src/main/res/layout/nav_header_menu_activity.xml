@@ -36,19 +36,19 @@
                 android:id="@+id/driver_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="姓名"
+                android:text="姓名: 讀取中"
                 android:textSize="25dp" />
             <TextView
                 android:id="@+id/taxiteam_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="車隊:"
+                android:text="車隊:  讀取中"
                 android:textSize="20dp"/>
             <TextView
                 android:id="@+id/driver_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="呼號:"
+                android:text="呼號:  讀取中"
                 android:textSize="20dp"/>
 
             <ImageView

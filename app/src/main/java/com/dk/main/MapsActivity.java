@@ -88,6 +88,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Co
         //地圖同步
         mapFragment.getMapAsync(this);
 
+
     }
 
 
