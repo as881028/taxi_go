@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -35,6 +37,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,6 +48,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -99,10 +103,24 @@ public class LoginActivity extends BaseActivity {
     LoginDetail LoginDetail = new LoginDetail();
 
     class LoginDetail {
+        //code 代碼
+        //-1 => "帳號或密碼錯誤。",
+        //-2 => "標章驗證錯誤。",
+        //-99 => "未知錯誤。"
         protected String code;
+
+        //errorMsg 錯誤訊息
         protected String errorMsg;
+
+        //token 驗證用token，後面與PHP溝通會用到
         protected String token;
+
+        //使用者ID
         protected String userId;
+
+        //使用者型態
+        // 1=>乘客
+        //2=>司機
         protected String userType;
 
         public void setDetail(String code, String errorMsg, String token, String userId, String userType) {
@@ -113,8 +131,12 @@ public class LoginActivity extends BaseActivity {
             this.userType = userType;
         }
 
-        public String getUserType() {
-            return this.userType;
+        public int getUserType() {
+            return Integer.parseInt(this.userType);
+        }
+
+        public int getCode() {
+            return Integer.parseInt(this.code);
         }
 
         public String getUserToken() {
@@ -290,7 +312,7 @@ public class LoginActivity extends BaseActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-
+            Handler handler = new Handler(getApplicationContext().getMainLooper());
             try {
                 // Simulate network access.
 
@@ -303,7 +325,8 @@ public class LoginActivity extends BaseActivity {
                 parseJson(result);
                 //判斷是否為司機端
                 Intent intent = new Intent();
-                if (LoginDetail.getUserType().equals("2")) {
+
+                if (LoginDetail.getUserType() == 2 && LoginDetail.getCode() == 1) {
                     if (var.debug) {
                         Log.i(TAG, "司機 登入成功");
                     }
@@ -325,6 +348,24 @@ public class LoginActivity extends BaseActivity {
                     //
 
 
+                } else if (LoginDetail.getUserType() == 1 && LoginDetail.getCode() == 1) {
+                    handler.post(new Runnable() {
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "此帳號為乘客端帳號，請改用乘客端登入。", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    return false;
+
+                } else if (LoginDetail.getCode() == -1) {
+                    if (var.debug) {
+                        Log.i(TAG, "帳號密碼錯誤");
+                    }
+                    handler.post(new Runnable() {
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "帳號密碼錯誤。", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    return false;
                 } else {
                     if (var.debug) {
                         Log.i(TAG, "登入失敗,DEBUG MODE ON,直接登入");
@@ -332,20 +373,35 @@ public class LoginActivity extends BaseActivity {
                         intent.setClass(LoginActivity.this, MapsActivity.class);
                         startActivity(intent);
                         LoginActivity.this.finish();
+                        return true;
                     }
-                }
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                if (var.debug)
-                    Log.i(TAG, "Internet error");
-                return false;
-            } catch (NullPointerException e) {
-                if (var.debug) {
-                    Log.i(TAG, "NULLPOINT");
-                    Log.i(TAG, e.toString());
-
                     return false;
                 }
+                Thread.sleep(3000);
+            } catch (ConnectException e) {
+                if (var.debug) {
+                    Log.i(TAG, "Connect Exception");
+                    Log.i(TAG, e.toString());
+                }
+                return false;
+            } catch (InterruptedException e) {
+                if (var.debug)
+                    Log.i(TAG, "Interrupted Exception");
+
+                return false;
+            } catch (NullPointerException e) {
+                handler.post(new Runnable() {
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "請確認網路連線。", Toast.LENGTH_LONG).show();
+                    }
+                });
+                if (var.debug) {
+                    Log.i(TAG, "NullPoint Exception");
+                    Log.i(TAG, e.toString());
+                }
+
+                return false;
+
 
             } catch (Exception e) {
                 if (var.debug)
@@ -359,13 +415,13 @@ public class LoginActivity extends BaseActivity {
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-//            showProgress(false);
+            showProgress(false);
             //登入完成後
             if (success) {
                 getPersonalData();
                 finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
+//                mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             }
         }
@@ -447,8 +503,6 @@ public class LoginActivity extends BaseActivity {
         var.PersonalDetail.setTeam(team);
         var.PersonalDetail.setCallNum(callNum);
 
-       
-
 
     }
 
@@ -466,7 +520,6 @@ public class LoginActivity extends BaseActivity {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-
 
 
     }

@@ -34,7 +34,7 @@ import static android.R.id.input;
 public class phpConnection {
 
 
-    public static String createConnection(String webFunction, Map<String, String> map) {
+    public static String createConnection(String webFunction, Map<String, String> map) throws ConnectException{
 
         String TAG = "phpConnection";
         String responseString = null;
@@ -116,7 +116,7 @@ public class phpConnection {
                 Log.i(TAG, "Connection fail");
 
             }
-        } catch (IOException e) {
+        }  catch (IOException e) {
             e.printStackTrace();
         } finally {
             // 中斷連線
