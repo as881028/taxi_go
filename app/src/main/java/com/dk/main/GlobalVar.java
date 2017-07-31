@@ -7,7 +7,7 @@ import android.app.Application;
  */
 
 public class GlobalVar extends Application {
-    public Boolean debug = true;
+    public Boolean debug = false;
 
     public String phone ="";
     public String webSiteIP = "140.128.98.12";
