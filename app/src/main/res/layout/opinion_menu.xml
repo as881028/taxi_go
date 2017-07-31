@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="XXXX年XX月XX號"
-        android:textSize="20dp" />
+        android:textSize="25dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -21,24 +21,21 @@
             android:id="@+id/score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.09"
             android:text="評分:"
             android:textSize="25dp" />
 
-        <ImageView
-            android:id="@+id/imageView2"
+        <RatingBar
+            android:id="@+id/ratingBar"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.34"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
+            android:layout_height="45dp" />
 
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/opinion_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-        android:textSize="25dp"/>
+        android:text="XXXX"
+        android:textSize="25dp" />
 
 </LinearLayout>
