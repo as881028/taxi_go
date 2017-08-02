@@ -19,6 +19,7 @@ import com.hitaxi.activities.OrderRecordAty;
 import com.hitaxi.activities.ReservationAty;
 import com.hitaxi.activities.ServiceCenterAty;
 import com.hitaxi.db.DBHelper;
+import com.hitaxi.object.PersonalDetail;
 
 import static android.provider.BaseColumns._ID;
 import static com.hitaxi.db.DBConstants.ACCOUNT;

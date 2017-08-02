@@ -7,7 +7,7 @@ import android.app.Application;
  */
 
 public class GlobalVar extends Application {
-    public Boolean debug = false;
+    public Boolean debug = true;
 
     public String phone ="";
     public String webSiteIP = "140.128.98.12";
@@ -15,6 +15,7 @@ public class GlobalVar extends Application {
     public String validation = "/validation";
     public String queryUser = "/query_member";
     public String queryDriver = "/query_driver";
+    public String queryTrad = "/query_transaction";
     public String  driver_location_add = "/driver_location_add.php";
    public com.hitaxi.object.PersonalDetail PersonalDetail ;
 

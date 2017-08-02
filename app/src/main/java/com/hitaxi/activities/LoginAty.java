@@ -70,7 +70,7 @@ public class LoginAty extends BaseActivity {
     private View mLoginFormView;
     //    private DBHelper userDBHelper;
     LoginDetail LoginDetail = new LoginDetail();
-
+    PersonalDetail PersonalDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +81,7 @@ public class LoginAty extends BaseActivity {
         initView();
         getGlobal();
         var.PersonalDetail = new PersonalDetail();
-
+        PersonalDetail = var.PersonalDetail;
         // set last user account and password (SQLite)
         setViewData();
     }
@@ -249,8 +249,9 @@ public class LoginAty extends BaseActivity {
                 parseJson(result);
                 //判斷是否為司機端
                 Intent intent = new Intent();
-
-                if (LoginDetail.getUserType() == 2 && LoginDetail.getCode() == 1) {
+                int userType = PersonalDetail.getUserType();
+                int code = PersonalDetail.getLoginCode();
+                if (userType== 2 && code == 1) {
                     if (var.debug) {
                         Log.i(TAG, "司機 登入成功");
                     }
@@ -264,7 +265,7 @@ public class LoginAty extends BaseActivity {
                     //
 
 
-                } else if (LoginDetail.getUserType() == 1 && LoginDetail.getCode() == 1) {
+                } else if (userType == 1 && code == 1) {
                     handler.post(new Runnable() {
                         public void run() {
                             Toast.makeText(getApplicationContext(), "此帳號為乘客端帳號，請改用乘客端登入。", Toast.LENGTH_LONG).show();
@@ -272,7 +273,7 @@ public class LoginAty extends BaseActivity {
                     });
                     return false;
 
-                } else if (LoginDetail.getCode() == -1) {
+                } else if (code == -1) {
                     if (var.debug) {
                         Log.i(TAG, "帳號密碼錯誤");
                     }
@@ -345,8 +346,8 @@ public class LoginAty extends BaseActivity {
 
                 values.put(ACCOUNT, mMap.get("LoginAccount"));
                 values.put(PASSWORD, mMap.get("LoginPassword"));
-                values.put(TOKEN, LoginDetail.getUserToken());
-                values.put(USERID, LoginDetail.getUserID());
+                values.put(TOKEN, PersonalDetail.getUserToken());
+                values.put(USERID, PersonalDetail.getUserID());
                 db.insert(TABLE_NAME, null, values);
             } else if (account.equals(mMap.get("LoginAccount")) && !password.equals(mMap.get("LoginPassword"))) {
                 values.put(PASSWORD, mMap.get("LoginPassword"));
@@ -362,6 +363,7 @@ public class LoginAty extends BaseActivity {
             //登入完成後
             if (success) {
                 getPersonalData();
+
                 finish();
             } else {
 //                mPasswordView.setError(getString(R.string.error_incorrect_password));
@@ -383,7 +385,7 @@ public class LoginAty extends BaseActivity {
         String token = jObject.getString("Token");
         String userId = jObject.getString("UserId");
         String userType = jObject.getString("UserType");
-        LoginDetail.setDetail(code, errorMsg, token, userId, userType);
+        PersonalDetail.setLoginDetail(code, errorMsg, token, userId, userType);
 
     }
 
@@ -441,18 +443,18 @@ public class LoginAty extends BaseActivity {
         String callNum = new JSONObject(new JSONObject(mJSONText).getString("UserArray")).getString("CallNum");
         String picture = new JSONObject(new JSONObject(mJSONText).getString("UserArray")).getString("Picture");
 
-        var.PersonalDetail.setDetail(code, userArray);
-        var.PersonalDetail.setName(name);
-        var.PersonalDetail.setTeam(team);
-        var.PersonalDetail.setCallNum(callNum);
+        PersonalDetail.setDetail(code, userArray);
+        PersonalDetail.setName(name);
+        PersonalDetail.setTeam(team);
+        PersonalDetail.setCallNum(callNum);
 
 
     }
 
     private void getPersonalData() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put("Token", LoginDetail.getUserToken());
-        map.put("UserID", LoginDetail.getUserID());
+        map.put("Token", PersonalDetail.getUserToken());
+        map.put("UserID", PersonalDetail.getUserID());
         String url = var.queryDriver;
 
         try {

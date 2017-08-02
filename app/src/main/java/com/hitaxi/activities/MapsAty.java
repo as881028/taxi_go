@@ -31,6 +31,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.location.LocationServices;
+import com.hitaxi.object.PersonalDetail;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -70,12 +71,12 @@ public class MapsAty extends BaseActivity implements OnMapReadyCallback, Connect
 
     Timer timer = new Timer(true);
     int LOCATION_SAVE_TIME_PRE_SECOND = 10;
-
+    public com.hitaxi.object.PersonalDetail PersonalDetail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setMenuLayout();
-
+//        PersonalDetail = var.PersonalDetail;
         //google api connect
         buildGoogleApiClient();
 //        getGlobal() = getGlobal();
