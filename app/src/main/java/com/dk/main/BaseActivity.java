@@ -139,7 +139,7 @@ public class BaseActivity extends AppCompatActivity {
 
 
     //MENU必要的宣告
-    public void initMenuBar() {
+    private void initMenuBar() {
         //menu tool bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -166,7 +166,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     //MENU相關事件
-    public void menu_click() {
+    private void menu_click() {
 
         //navigation drawer個人資訊點擊
         findViewById(R.id.imageButton2).setOnClickListener(new View.OnClickListener() {
