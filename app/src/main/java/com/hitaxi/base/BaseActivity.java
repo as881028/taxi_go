@@ -33,6 +33,11 @@ import static com.hitaxi.db.DBConstants.USERID;
 
 public class BaseActivity extends AppCompatActivity {
 
+    public GlobalVar getGlobal() {
+        GlobalVar var = (GlobalVar) getApplicationContext();
+        return var;
+    }
+
     public DBHelper userDBHelper;
 
 

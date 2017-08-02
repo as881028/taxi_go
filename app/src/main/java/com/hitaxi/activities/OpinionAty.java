@@ -11,6 +11,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.dk.main.R;
+import com.hitaxi.adapter.OpinionAdapter;
 import com.hitaxi.base.MenuBaseActivity;
 
 public class OpinionAty extends MenuBaseActivity {
@@ -26,52 +27,12 @@ public class OpinionAty extends MenuBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setMenuLayout(R.layout.activity_opinion);
-        opinion_Listview = (ListView) findViewById(R.id.opinion_Listview);
-        //建立自訂的Adapter
-        OpinionAty.MyAdapter adapter = new OpinionAty.MyAdapter(this);
-
-        //設定ListView 的資源來源
-        opinion_Listview.setAdapter(adapter);
-    }
-    public class MyAdapter extends BaseAdapter {
-        private LayoutInflater myInflater;
-
-        public MyAdapter(Context c) {
-            myInflater = LayoutInflater.from(c);
-        }
-
-        @Override
-        public int getCount() {
-            return dates.length;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return dates[position];
-        }
-
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int postition, View convertView, ViewGroup parent) {
-            convertView = myInflater.inflate(R.layout.reservation_listview_layout, null);
-            //取得XML內容
-            TextView tvDate = ((TextView)
-                    convertView.findViewById(R.id.date));
-            TextView tvScore = ((TextView)
-                    convertView.findViewById(R.id.score));
-            RatingBar rbRatingBar = ((RatingBar)
-                    convertView.findViewById(R.id.ratingBar));
-            TextView tvOpinionContent = ((TextView)
-                    convertView.findViewById(R.id.opinion_content));
-
-            tvDate.setText(dates[postition]);
-            //ratingBar.setRating(stars[postition]);
-            tvOpinionContent.setText(contents[postition]);
-            return convertView;
-        }
+//        opinion_Listview = (ListView) findViewById(R.id.opinion_Listview);
+//        //建立自訂的Adapter
+//        OpinionAdapter adapter = new OpinionAdapter(this,dates,stars,contents);
+//
+//        //設定ListView 的資源來源
+//        opinion_Listview.setAdapter(adapter);
     }
 
 

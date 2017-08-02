@@ -30,7 +30,7 @@ public class PersonInfoAty extends MenuBaseActivity {
         setMenuLayout(R.layout.activity_personal_information);
         initView();
 //        openDatabase();
-        var = ((GlobalVar) getApplicationContext());
+        var = getGlobal();
         PersonalDetail = var.PersonalDetail;
 
 
@@ -39,10 +39,8 @@ public class PersonInfoAty extends MenuBaseActivity {
     }
 
 
-
-
     private void initView() {
-        //navigation drawer個人資訊點擊收入紀錄
+        //按鈕->收入紀錄
         findViewById(R.id.income_record_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,15 +49,8 @@ public class PersonInfoAty extends MenuBaseActivity {
                 startActivity(i);
             }
         });
-        //navigation drawer個人資訊點擊意見
-        findViewById(R.id.income_record_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent();
-                i.setClass(PersonInfoAty.this, IncomeRecordAty.class);
-                startActivity(i);
-            }
-        });
+
+        //按鈕->意見
         findViewById(R.id.opinion_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,7 +59,7 @@ public class PersonInfoAty extends MenuBaseActivity {
                 startActivity(i);
             }
         });
-        //navigation drawer個人資訊點擊修改密碼
+        //按鈕->修改密碼
         findViewById(R.id.modify_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,8 +74,6 @@ public class PersonInfoAty extends MenuBaseActivity {
         tvCallNum = (TextView) findViewById(R.id.callnumer_textView);
 
     }
-
-
 
 
 }

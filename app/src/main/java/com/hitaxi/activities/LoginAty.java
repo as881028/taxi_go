@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -27,6 +28,8 @@ import android.widget.Toast;
 import com.dk.main.R;
 import com.hitaxi.base.BaseActivity;
 import com.hitaxi.base.GlobalVar;
+import com.hitaxi.db.DBHelper;
+import com.hitaxi.object.LoginDetail;
 import com.hitaxi.object.PersonalDetail;
 
 import com.hitaxi.tools.phpConnection;
@@ -69,58 +72,12 @@ public class LoginAty extends BaseActivity {
     //    private DBHelper userDBHelper;
     LoginDetail LoginDetail = new LoginDetail();
 
-    class LoginDetail {
-        //code 代碼
-        //-1 => "帳號或密碼錯誤。",
-        //-2 => "標章驗證錯誤。",
-        //-99 => "未知錯誤。"
-        protected String code;
-
-        //errorMsg 錯誤訊息
-        protected String errorMsg;
-
-        //token 驗證用token，後面與PHP溝通會用到
-        protected String token;
-
-        //使用者ID
-        protected String userId;
-
-        //使用者型態
-        // 1=>乘客
-        //2=>司機
-        protected String userType;
-
-        public void setDetail(String code, String errorMsg, String token, String userId, String userType) {
-            this.code = code;
-            this.errorMsg = errorMsg;
-            this.token = token;
-            this.userId = userId;
-            this.userType = userType;
-        }
-
-        public int getUserType() {
-            return Integer.parseInt(this.userType);
-        }
-
-        public int getCode() {
-            return Integer.parseInt(this.code);
-        }
-
-        public String getUserToken() {
-            return this.token;
-        }
-
-        public String getUserID() {
-            return this.userId;
-        }
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        var = (GlobalVar) getApplicationContext();
+        var = getGlobal();
         openDatabase();
         initView();
         var.PersonalDetail = new PersonalDetail();
@@ -297,15 +254,7 @@ public class LoginAty extends BaseActivity {
                     if (var.debug) {
                         Log.i(TAG, "司機 登入成功");
                     }
-
-                    //data insert to database
-                    SQLiteDatabase db = userDBHelper.getWritableDatabase();
-                    ContentValues values = new ContentValues();
-                    values.put(ACCOUNT, mMap.get("LoginAccount"));
-                    values.put(PASSWORD, mMap.get("LoginPassword"));
-                    values.put(TOKEN, LoginDetail.getUserToken());
-                    values.put(USERID, LoginDetail.getUserID());
-                    db.insert(TABLE_NAME, null, values);
+                    insertSQLite();
 
 
                     // 換頁 to MapsActivity
@@ -377,6 +326,33 @@ public class LoginAty extends BaseActivity {
 
             // TODO: register the new account here.
             return true;
+        }
+
+        private void insertSQLite() {
+            String account = "";
+            String password = "";
+            SQLiteDatabase db = userDBHelper.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            Cursor cursor = getCursor();
+            while (cursor.moveToNext()) {
+                account = cursor.getString(1);
+                password = cursor.getString(2);
+            }
+
+
+            if (!account.equals(mMap.get("LoginAccount")) && !password.equals(mMap.get("LoginPassword"))) {
+                //data insert to database
+
+                values.put(ACCOUNT, mMap.get("LoginAccount"));
+                values.put(PASSWORD, mMap.get("LoginPassword"));
+                values.put(TOKEN, LoginDetail.getUserToken());
+                values.put(USERID, LoginDetail.getUserID());
+                db.insert(TABLE_NAME, null, values);
+            } else if (account.equals(mMap.get("LoginAccount")) && !password.equals(mMap.get("LoginPassword"))) {
+                values.put(PASSWORD, mMap.get("LoginPassword"));
+                db.update(TABLE_NAME, values, ACCOUNT + "=" + mMap.get("LoginAccount"), null);
+            }
+
         }
 
         @Override

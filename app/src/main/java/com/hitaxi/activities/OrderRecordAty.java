@@ -1,5 +1,6 @@
 package com.hitaxi.activities;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.dk.main.R;
@@ -11,8 +12,9 @@ public class OrderRecordAty extends MenuBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setMenuLayout(R.layout.activity_order_record);
-//        replaceInclude(R.layout.activity_order_record);
+
     }
+
 
 
 }

@@ -78,7 +78,7 @@ public class MapsAty extends BaseActivity implements OnMapReadyCallback, Connect
 
         //google api connect
         buildGoogleApiClient();
-        var = ((GlobalVar) getApplicationContext());
+        var = getGlobal();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         //地圖同步
