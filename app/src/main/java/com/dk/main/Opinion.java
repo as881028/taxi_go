@@ -62,7 +62,7 @@ public class Opinion extends MenuBaseActivity {
             convertView = myInflater.inflate(R.layout.reservation_listview_layout, null);
             //取得XML內容
             TextView date_textView = ((TextView)
-                    convertView.findViewById(R.id.date_textView));
+                    convertView.findViewById(R.id.date));
             TextView score = ((TextView)
                     convertView.findViewById(R.id.score));
             RatingBar ratingBar = ((RatingBar)
