@@ -1,4 +1,4 @@
-package com.dk.main;
+package com.hitaxi.db;
 
 /**
  * Created by DK on 2017/7/10.

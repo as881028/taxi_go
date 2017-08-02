@@ -1,6 +1,5 @@
-package com.dk.main;
+package com.hitaxi.base;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,19 +7,25 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.hitaxi.activities.PersonInfoAty;
+import com.dk.main.R;
+import com.hitaxi.activities.LatestNewsAty;
+import com.hitaxi.activities.OrderRecordAty;
+import com.hitaxi.activities.ReservationAty;
+import com.hitaxi.activities.ServiceCenterAty;
+import com.hitaxi.db.DBHelper;
+
 import static android.provider.BaseColumns._ID;
-import static com.dk.main.DBConstants.ACCOUNT;
-import static com.dk.main.DBConstants.PASSWORD;
-import static com.dk.main.DBConstants.TABLE_NAME;
-import static com.dk.main.DBConstants.TOKEN;
-import static com.dk.main.DBConstants.USERID;
+import static com.hitaxi.db.DBConstants.ACCOUNT;
+import static com.hitaxi.db.DBConstants.PASSWORD;
+import static com.hitaxi.db.DBConstants.TABLE_NAME;
+import static com.hitaxi.db.DBConstants.TOKEN;
+import static com.hitaxi.db.DBConstants.USERID;
 
 /**
  * Created by DK on 2017/7/28.
@@ -131,7 +136,7 @@ public class BaseActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent i = new Intent();
-                i.setClass(getApplicationContext(), PersonalInformation.class);
+                i.setClass(getApplicationContext(), PersonInfoAty.class);
                 startActivity(i);
             }
         });
@@ -141,7 +146,7 @@ public class BaseActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent i = new Intent();
-                i.setClass(getApplicationContext(), LatestNews.class);
+                i.setClass(getApplicationContext(), LatestNewsAty.class);
                 startActivity(i);
             }
         });
@@ -151,7 +156,7 @@ public class BaseActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent i = new Intent();
-                i.setClass(getApplicationContext(), OrderRecord.class);
+                i.setClass(getApplicationContext(), OrderRecordAty.class);
                 startActivity(i);
             }
         });
@@ -161,7 +166,7 @@ public class BaseActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent i = new Intent();
-                i.setClass(getApplicationContext(), ServiceCenter.class);
+                i.setClass(getApplicationContext(), ServiceCenterAty.class);
                 startActivity(i);
             }
         });
@@ -171,7 +176,7 @@ public class BaseActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent i = new Intent();
-                i.setClass(getApplicationContext(), Reservation.class);
+                i.setClass(getApplicationContext(), ReservationAty.class);
                 startActivity(i);
             }
         });

@@ -1,11 +1,8 @@
-package com.dk.main;
+package com.hitaxi.tools;
 
-import android.app.Application;
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.hitaxi.base.GlobalVar;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,18 +11,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import javax.net.ssl.HttpsURLConnection;
-
-import static android.R.attr.key;
-import static android.R.attr.value;
-import static android.R.id.input;
 
 /**
  * Created by DK on 2017/7/6.

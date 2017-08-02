@@ -1,13 +1,11 @@
-package com.dk.main;
+package com.hitaxi.activities;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 
-import android.view.View;
-import android.view.ViewGroup;
+import com.dk.main.R;
+import com.hitaxi.base.MenuBaseActivity;
 
-public class OrderRecord extends MenuBaseActivity {
+public class OrderRecordAty extends MenuBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,14 +1,7 @@
-package com.dk.main;
+package com.hitaxi.activities;
 
 import android.content.Context;
-import android.media.Rating;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +10,10 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-public class Opinion extends MenuBaseActivity {
+import com.dk.main.R;
+import com.hitaxi.base.MenuBaseActivity;
+
+public class OpinionAty extends MenuBaseActivity {
 
     ListView opinion_Listview;
     String[] dates= new String[] {"2017年5月12","2017年5月13日","2017年5月14日","2017年5月15日","2017年5月16日",
@@ -32,7 +28,7 @@ public class Opinion extends MenuBaseActivity {
         setMenuLayout(R.layout.activity_opinion);
         opinion_Listview = (ListView) findViewById(R.id.opinion_Listview);
         //建立自訂的Adapter
-        Opinion.MyAdapter adapter = new Opinion.MyAdapter(this);
+        OpinionAty.MyAdapter adapter = new OpinionAty.MyAdapter(this);
 
         //設定ListView 的資源來源
         opinion_Listview.setAdapter(adapter);

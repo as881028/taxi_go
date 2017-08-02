@@ -2,8 +2,9 @@ package com.dk.main;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.test.espresso.core.deps.guava.collect.Maps;
 import android.test.ActivityInstrumentationTestCase2;
+
+import com.hitaxi.activities.MapsActivity;
 
 /**
  * Created by DK on 2017/7/21.

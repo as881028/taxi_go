@@ -1,8 +1,11 @@
-package com.dk.main;
+package com.hitaxi.activities;
 
 import android.os.Bundle;
 
-public class ModifyPersonalInformation extends BaseActivity {
+import com.hitaxi.base.BaseActivity;
+import com.dk.main.R;
+
+public class ModPersonInfoAty extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

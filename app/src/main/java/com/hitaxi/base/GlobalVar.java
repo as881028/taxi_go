@@ -1,4 +1,4 @@
-package com.dk.main;
+package com.hitaxi.base;
 
 import android.app.Application;
 
@@ -16,6 +16,6 @@ public class GlobalVar extends Application {
     public String queryUser = "/query_member";
     public String queryDriver = "/query_driver";
     public String  driver_location_add = "/driver_location_add.php";
-    PersonalDetail PersonalDetail ;
+   public com.hitaxi.object.PersonalDetail PersonalDetail ;
 
 }

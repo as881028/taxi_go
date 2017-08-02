@@ -1,14 +1,8 @@
-package com.dk.main;
+package com.hitaxi.activities;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +11,15 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.dk.main.R;
+import com.hitaxi.tools.phpConnection;
+import com.hitaxi.base.BaseActivity;
+import com.hitaxi.base.GlobalVar;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class IncomeRecord extends BaseActivity {
+public class IncomeRecordAty extends BaseActivity {
 
 
     public class MyAdapter extends BaseAdapter {
@@ -65,7 +64,7 @@ public class IncomeRecord extends BaseActivity {
     }
     protected static final String TAG = "IncomeRecordActivity";
     private GlobalVar var;
-    PersonalDetail PersonalDetail;
+    com.hitaxi.object.PersonalDetail PersonalDetail;
     ListView income_record_Listview;
     String[] dates= new String[] {"2017年5月12","2017年5月13日","2017年5月14日","2017年5月15日","2017年5月16日",
             "2017年5月17日","2017年5月18日","2017年5月19日","2017年5月20日","2017年5月21日"};

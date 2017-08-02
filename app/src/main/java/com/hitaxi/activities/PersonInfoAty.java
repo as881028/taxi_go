@@ -1,33 +1,16 @@
-package com.dk.main;
+package com.hitaxi.activities;
 
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.dk.main.R;
+import com.hitaxi.base.GlobalVar;
+import com.hitaxi.base.MenuBaseActivity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-
-import static android.provider.BaseColumns._ID;
-import static com.dk.main.DBConstants.ACCOUNT;
-import static com.dk.main.DBConstants.PASSWORD;
-import static com.dk.main.DBConstants.TABLE_NAME;
-import static com.dk.main.DBConstants.TOKEN;
-import static com.dk.main.DBConstants.USERID;
-
-public class PersonalInformation extends MenuBaseActivity {
+public class PersonInfoAty extends MenuBaseActivity {
     Intent i = new Intent();
     private String mConnResult = null;
 
@@ -38,7 +21,7 @@ public class PersonalInformation extends MenuBaseActivity {
 
     private TextView tvDriverTeam;
     private TextView tvCallNum;
-    PersonalDetail PersonalDetail;
+    com.hitaxi.object.PersonalDetail PersonalDetail;
 
 
     @Override
@@ -64,7 +47,7 @@ public class PersonalInformation extends MenuBaseActivity {
             @Override
             public void onClick(View v) {
 
-                i.setClass(PersonalInformation.this, IncomeRecord.class);
+                i.setClass(PersonInfoAty.this, IncomeRecordAty.class);
                 startActivity(i);
             }
         });
@@ -73,7 +56,7 @@ public class PersonalInformation extends MenuBaseActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent();
-                i.setClass(PersonalInformation.this, IncomeRecord.class);
+                i.setClass(PersonInfoAty.this, IncomeRecordAty.class);
                 startActivity(i);
             }
         });
@@ -81,7 +64,7 @@ public class PersonalInformation extends MenuBaseActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent();
-                i.setClass(PersonalInformation.this, Opinion.class);
+                i.setClass(PersonInfoAty.this, OpinionAty.class);
                 startActivity(i);
             }
         });
@@ -90,7 +73,7 @@ public class PersonalInformation extends MenuBaseActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent();
-                i.setClass(PersonalInformation.this, ModifyPersonalInformation.class);
+                i.setClass(PersonInfoAty.this, ModPersonInfoAty.class);
                 startActivity(i);
             }
         });

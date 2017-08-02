@@ -1,13 +1,7 @@
-package com.dk.main;
+package com.hitaxi.activities;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +9,10 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.Date;
+import com.dk.main.R;
+import com.hitaxi.base.MenuBaseActivity;
 
-public class Reservation extends MenuBaseActivity {
+public class ReservationAty extends MenuBaseActivity {
     ListView reservation_Listview;
     String[] dates= new String[] {"2017年5月12","2017年5月13日","2017年5月14日","2017年5月15日","2017年5月16日",
             "2017年5月17日","2017年5月18日","2017年5月19日","2017年5月20日","2017年5月21日"};

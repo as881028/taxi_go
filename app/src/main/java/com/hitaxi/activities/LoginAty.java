@@ -1,84 +1,56 @@
-package com.dk.main;
+package com.hitaxi.activities;
 
-import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
-import android.os.Message;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
 
-import android.content.CursorLoader;
-import android.content.Loader;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
+import com.dk.main.R;
+import com.hitaxi.base.BaseActivity;
+import com.hitaxi.base.GlobalVar;
+import com.hitaxi.object.PersonalDetail;
+
+import com.hitaxi.tools.phpConnection;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.ConnectException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
-import javax.net.ssl.HttpsURLConnection;
-
-import static android.Manifest.permission.*;
-
-import static android.Manifest.permission.*;
-import static android.Manifest.permission.READ_CONTACTS;
-
 // DB columns
-import static android.provider.BaseColumns._ID;
-import static com.dk.main.DBConstants.ACCOUNT;
-import static com.dk.main.DBConstants.PASSWORD;
-import static com.dk.main.DBConstants.TABLE_NAME;
-import static com.dk.main.DBConstants.TOKEN;
-import static com.dk.main.DBConstants.USERID;
+import static com.hitaxi.db.DBConstants.ACCOUNT;
+import static com.hitaxi.db.DBConstants.PASSWORD;
+import static com.hitaxi.db.DBConstants.TABLE_NAME;
+import static com.hitaxi.db.DBConstants.TOKEN;
+import static com.hitaxi.db.DBConstants.USERID;
 //
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends BaseActivity {
+public class LoginAty extends BaseActivity {
 
 
     /**
@@ -86,9 +58,9 @@ public class LoginActivity extends BaseActivity {
      */
     private HttpPostLoginTask mAuthTask = null;
     private String mPersonalResult = null;
-    private GlobalVar var;
+    private com.hitaxi.base.GlobalVar var;
 
-    protected static final String TAG = "LoginActivity";
+    protected static final String TAG = "LoginAty";
     // UI references.
     private EditText mPhoneView;
     private EditText mPasswordView;
@@ -337,9 +309,9 @@ public class LoginActivity extends BaseActivity {
 
 
                     // 換頁 to MapsActivity
-                    intent.setClass(LoginActivity.this, MapsActivity.class);
+                    intent.setClass(LoginAty.this, MapsAty.class);
                     startActivity(intent);
-                    LoginActivity.this.finish();
+                    LoginAty.this.finish();
                     //
 
 
@@ -365,9 +337,9 @@ public class LoginActivity extends BaseActivity {
                     if (var.debug) {
                         Log.i(TAG, "登入失敗,DEBUG MODE ON,直接登入");
                         //跳過登入
-                        intent.setClass(LoginActivity.this, MapsActivity.class);
+                        intent.setClass(LoginAty.this, MapsAty.class);
                         startActivity(intent);
-                        LoginActivity.this.finish();
+                        LoginAty.this.finish();
                         return true;
                     }
                     return false;
