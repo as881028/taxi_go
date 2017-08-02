@@ -87,7 +87,7 @@
             android:label="@string/title_activity_income_record"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Opinion"
+            android:name="com.hitaxi.activities.OpinionAty"
             android:label="@string/title_activity_opinion"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

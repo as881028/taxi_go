@@ -27,7 +27,6 @@ import android.widget.Toast;
 
 import com.dk.main.R;
 import com.hitaxi.base.BaseActivity;
-import com.hitaxi.base.GlobalVar;
 import com.hitaxi.db.DBHelper;
 import com.hitaxi.object.LoginDetail;
 import com.hitaxi.object.PersonalDetail;
@@ -61,7 +60,7 @@ public class LoginAty extends BaseActivity {
      */
     private HttpPostLoginTask mAuthTask = null;
     private String mPersonalResult = null;
-    private com.hitaxi.base.GlobalVar var;
+//    private com.hitaxi.base.GlobalVar var;
 
     protected static final String TAG = "LoginAty";
     // UI references.
@@ -77,9 +76,10 @@ public class LoginAty extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        var = getGlobal();
+//        var = var;
         openDatabase();
         initView();
+        getGlobal();
         var.PersonalDetail = new PersonalDetail();
 
         // set last user account and password (SQLite)

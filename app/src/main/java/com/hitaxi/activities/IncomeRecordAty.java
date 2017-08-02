@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dk.main.R;
+import com.hitaxi.adapter.IncomeRecordAdapter;
 import com.hitaxi.tools.phpConnection;
 import com.hitaxi.base.BaseActivity;
 import com.hitaxi.base.GlobalVar;
@@ -22,46 +23,7 @@ import java.util.Map;
 public class IncomeRecordAty extends BaseActivity {
 
 
-    public class MyAdapter extends BaseAdapter {
-        private LayoutInflater myInflater;
-        public MyAdapter(Context c){
-            myInflater = LayoutInflater.from(c);
-        }
-        @Override
-        public int getCount(){
-            return dates.length;
-        }
-        @Override
-        public Object getItem(int position){
-            return dates[position];
-        }
-        public long getItemId(int position){
-            return position;
-        }
-        @Override
-        public View getView (int postition,View convertView, ViewGroup parent){
-            convertView = myInflater.inflate(R.layout.incomerecord_listview_layout,null);
-            //取得XML內容
-            TextView date = ((TextView)
-                    convertView.findViewById(R.id.date));
-            TextView score = ((TextView)
-                    convertView.findViewById(R.id.score));
-            TextView digital = ((TextView)
-                    convertView.findViewById(R.id.digital));
-            TextView month = ((TextView)
-                    convertView.findViewById(R.id.month));
-            TextView month_textView = ((TextView)
-                    convertView.findViewById(R.id.month_textView));
-            TextView money = ((TextView)
-                    convertView.findViewById(R.id.money));
 
-            date.setText(dates[postition]);
-            digital.setText(digitals[postition]);
-            month.setText(monthes[postition]);
-            money.setText(moneies[postition]);
-            return convertView;
-        }
-    }
     protected static final String TAG = "IncomeRecordActivity";
     private GlobalVar var;
     com.hitaxi.object.PersonalDetail PersonalDetail;
@@ -79,7 +41,7 @@ public class IncomeRecordAty extends BaseActivity {
         setMenuLayout(R.layout.activity_income_record);
         income_record_Listview = (ListView)findViewById(R.id.income_record_Listview);
         //建立自訂的Adapter
-        MyAdapter adapter=new MyAdapter(this);
+        IncomeRecordAdapter adapter = new IncomeRecordAdapter(this,dates,digitals,monthes,moneies);
         //設定ListView 的資源來源
         income_record_Listview.setAdapter(adapter);
 

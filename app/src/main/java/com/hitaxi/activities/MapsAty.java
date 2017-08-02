@@ -15,7 +15,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.hitaxi.base.BaseActivity;
-import com.hitaxi.base.GlobalVar;
+
 import com.dk.main.R;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -63,7 +63,7 @@ public class MapsAty extends BaseActivity implements OnMapReadyCallback, Connect
     private DriverMapTask mMapTask = null;
     protected GoogleApiClient mGoogleApiClient;
     protected Location mLastLocation;
-    private GlobalVar var;
+
     private GoogleMap mMap;
     Coordinate Coordinate = new Coordinate();
     private final String PERMISSION_ACCESS_FINE_LOCATION = "android.permission.ACCESS_FINE_LOCATION";
@@ -78,7 +78,7 @@ public class MapsAty extends BaseActivity implements OnMapReadyCallback, Connect
 
         //google api connect
         buildGoogleApiClient();
-        var = getGlobal();
+//        getGlobal() = getGlobal();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         //地圖同步
@@ -256,7 +256,7 @@ public class MapsAty extends BaseActivity implements OnMapReadyCallback, Connect
                 value.add(var.phone);
                 value.add(mLatitude);
                 value.add(mLongitude);
-//                String result = phpConnection.createConnection(var.driver_location_add, key, value);
+//                String result = phpConnection.createConnection(getGlobal().driver_location_add, key, value);
                 if (var.debug) {
 //                    Log.i(TAG, result);
                 }

@@ -15,7 +15,7 @@ public class PersonInfoAty extends MenuBaseActivity {
     private String mConnResult = null;
 
     protected static final String TAG = "PersonalInfo";
-    private GlobalVar var;
+
     String uid = "";
     String token = "";
 
@@ -29,8 +29,7 @@ public class PersonInfoAty extends MenuBaseActivity {
         super.onCreate(savedInstanceState);
         setMenuLayout(R.layout.activity_personal_information);
         initView();
-//        openDatabase();
-        var = getGlobal();
+
         PersonalDetail = var.PersonalDetail;
 
 

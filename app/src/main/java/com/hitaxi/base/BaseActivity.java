@@ -33,9 +33,11 @@ import static com.hitaxi.db.DBConstants.USERID;
 
 public class BaseActivity extends AppCompatActivity {
 
-    public GlobalVar getGlobal() {
-        GlobalVar var = (GlobalVar) getApplicationContext();
-        return var;
+    public GlobalVar var;
+
+
+    public void getGlobal() {
+        var = (GlobalVar) getApplicationContext();
     }
 
     public DBHelper userDBHelper;
@@ -87,6 +89,7 @@ public class BaseActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         menu_click();
         initMenuBar();
+        getGlobal();
     }
 
 
@@ -102,6 +105,7 @@ public class BaseActivity extends AppCompatActivity {
         menu_click();
         initMenuBar();
         menu_text_set();
+        getGlobal();
     }
 
 
@@ -115,11 +119,10 @@ public class BaseActivity extends AppCompatActivity {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
-            public void onDrawerClosed(View view) {
 
-            }
 
-            public void onDrawerOpened(View drawerView) {
+            @Override
+            public void onDrawerStateChanged(int newState) {
                 menu_text_set();
             }
 
