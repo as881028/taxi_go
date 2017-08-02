@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/date_textView"
+        android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="XXXX年XX月XX號"
@@ -27,7 +27,9 @@
         <RatingBar
             android:id="@+id/ratingBar"
             android:layout_width="wrap_content"
-            android:layout_height="45dp" />
+            android:layout_height="45dp"
+            android:numStars="5"
+            android:scrollbarSize="10dp"/>
 
     </LinearLayout>
 
