@@ -79,13 +79,8 @@ import static com.dk.main.DBConstants.USERID;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends BaseActivity {
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "0909288870:123456", "bar@example.com:world"
-    };
+
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */

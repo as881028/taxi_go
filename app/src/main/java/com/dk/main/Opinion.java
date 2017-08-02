@@ -33,6 +33,7 @@ public class Opinion extends MenuBaseActivity {
         opinion_Listview = (ListView) findViewById(R.id.opinion_Listview);
         //建立自訂的Adapter
         Opinion.MyAdapter adapter = new Opinion.MyAdapter(this);
+
         //設定ListView 的資源來源
         opinion_Listview.setAdapter(adapter);
     }
@@ -61,18 +62,18 @@ public class Opinion extends MenuBaseActivity {
         public View getView(int postition, View convertView, ViewGroup parent) {
             convertView = myInflater.inflate(R.layout.reservation_listview_layout, null);
             //取得XML內容
-            TextView date_textView = ((TextView)
+            TextView tvDate = ((TextView)
                     convertView.findViewById(R.id.date));
-            TextView score = ((TextView)
+            TextView tvScore = ((TextView)
                     convertView.findViewById(R.id.score));
-            RatingBar ratingBar = ((RatingBar)
+            RatingBar rbRatingBar = ((RatingBar)
                     convertView.findViewById(R.id.ratingBar));
-            TextView opinion_content = ((TextView)
+            TextView tvOpinionContent = ((TextView)
                     convertView.findViewById(R.id.opinion_content));
 
-            date_textView.setText(dates[postition]);
+            tvDate.setText(dates[postition]);
             //ratingBar.setRating(stars[postition]);
-            opinion_content.setText(contents[postition]);
+            tvOpinionContent.setText(contents[postition]);
             return convertView;
         }
     }

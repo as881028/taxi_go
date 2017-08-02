@@ -30,49 +30,6 @@ public class BaseActivity extends AppCompatActivity {
 
     public DBHelper userDBHelper;
 
-    //個人資料物件
-    class PersonalDetail {
-        protected String code;
-        protected String userArray;
-        protected String name;
-        protected String team;
-        protected String callNum;
-        protected String setPicture;
-
-
-        void setDetail(String code, String UserArray) {
-            this.code = code;
-            this.userArray = UserArray;
-        }
-
-        String getUserArray() {
-            return this.userArray;
-        }
-
-        void setName(String name) {
-            this.name = name;
-        }
-
-        String getName() {
-            return this.name;
-        }
-
-        void setTeam(String team) {
-            this.team = team;
-        }
-
-        String getTeam() {
-            return this.team;
-        }
-
-        void setCallNum(String callNum) {
-            this.callNum = callNum;
-        }
-
-        String getCallNum() {
-            return this.callNum;
-        }
-    }
 
     public void openDatabase() {
         userDBHelper = new DBHelper(this);
@@ -168,7 +125,7 @@ public class BaseActivity extends AppCompatActivity {
     //MENU相關事件
     private void menu_click() {
 
-        //navigation drawer個人資訊點擊
+        //選單 -> 個人資料
         findViewById(R.id.imageButton2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,7 +135,7 @@ public class BaseActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        //navigation drawer 選單內點擊
+        //選單 -> 最新消息
         findViewById(R.id.latest_news).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,7 +145,7 @@ public class BaseActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-//        navigation drawer 選單內點擊接單紀錄
+        //選單 -> 接單紀錄
         findViewById(R.id.order_record).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -198,6 +155,7 @@ public class BaseActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        //選單 -> 服務中心
         findViewById(R.id.service_center_Button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,6 +165,7 @@ public class BaseActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        //選單 -> 服務中心
         findViewById(R.id.reservation_Button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
