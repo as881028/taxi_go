@@ -19,6 +19,10 @@ import com.hitaxi.tools.phpConnection;
 import com.hitaxi.base.BaseActivity;
 import com.hitaxi.base.GlobalVar;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -80,7 +84,7 @@ public class IncomeRecordAty extends BaseActivity {
             try {
                 //取得PHP回傳值
                 result = phpConnection.createConnection(mUrl, mMap);
-//                parsePersonalJson(result);
+                parseJson(result);
 
                 Log.i(TAG, result);
 
@@ -96,6 +100,26 @@ public class IncomeRecordAty extends BaseActivity {
             // TODO: register the new account here.
             return result;
         }
+
+
+    }
+
+    private void parseJson(String mJSONText) throws JSONException {
+        JSONObject jObject = new JSONObject(mJSONText);
+        JSONArray jArray = jObject.getJSONArray("TradArray");
+        String tid = jArray.getJSONObject(0).getString("Tid");
+        String startTime = jArray.getJSONObject(0).getString("StartTime");
+        String endTime = jArray.getJSONObject(0).getString("EndTime");
+        String StartLatitude = jArray.getJSONObject(0).getString("StartLatitude");
+        String StartLongitude = jArray.getJSONObject(0).getString("StartLongitude");
+        String EndLatitude = jArray.getJSONObject(0).getString("EndLatitude");
+        String EndLongitude = jArray.getJSONObject(0).getString("EndLongitude");
+        String EstimetePrice = jArray.getJSONObject(0).getString("EstimetePrice");
+        String ActualPrice = jArray.getJSONObject(0).getString("ActualPrice");
+        String TravelTime = jArray.getJSONObject(0).getString("TravelTime");
+        String Income = jArray.getJSONObject(0).getString("Income");
+        String Evaluation = jArray.getJSONObject(0).getString("Evaluation");
+        String Opinion = jArray.getJSONObject(0).getString("Opinion");
 
 
     }
