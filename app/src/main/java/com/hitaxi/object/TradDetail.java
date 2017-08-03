@@ -1,6 +1,7 @@
 package com.hitaxi.object;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by DK on 2017/8/3.
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 public class TradDetail {
     ArrayList<String> tidArray = new ArrayList<String>();
     ArrayList<Integer> moneyArray = new ArrayList<Integer>();
+    ArrayList<String> monthArray = new ArrayList<String>();
     public TradDetail() {
 
     }
@@ -25,5 +27,12 @@ public class TradDetail {
     }
     public ArrayList<Integer> getMoneyArray(){
         return this.moneyArray;
+    }
+
+    public void addDate(String month) {
+        monthArray.add(month);
+    }
+    public ArrayList<String> getDateArray(){
+        return this.monthArray;
     }
 }

@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.dk.main.R;
 
+import java.util.ArrayList;
+
 /**
  * Created by DK on 2017/8/3.
  */
