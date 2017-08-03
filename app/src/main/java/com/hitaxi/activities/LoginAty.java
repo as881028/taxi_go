@@ -13,7 +13,6 @@ import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -27,8 +26,6 @@ import android.widget.Toast;
 
 import com.dk.main.R;
 import com.hitaxi.base.BaseActivity;
-import com.hitaxi.db.DBHelper;
-import com.hitaxi.object.LoginDetail;
 import com.hitaxi.object.PersonalDetail;
 
 import com.hitaxi.tools.phpConnection;
@@ -69,7 +66,7 @@ public class LoginAty extends BaseActivity {
     private View mProgressView;
     private View mLoginFormView;
     //    private DBHelper userDBHelper;
-    LoginDetail LoginDetail = new LoginDetail();
+//    LoginDetail LoginDetail = new LoginDetail();
     PersonalDetail PersonalDetail;
 
     @Override

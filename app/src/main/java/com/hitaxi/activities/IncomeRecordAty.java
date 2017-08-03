@@ -1,23 +1,16 @@
 package com.hitaxi.activities;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.dk.main.R;
 import com.hitaxi.adapter.IncomeRecordAdapter;
-import com.hitaxi.object.LoginDetail;
 import com.hitaxi.object.PersonalDetail;
+import com.hitaxi.object.TradDetail;
 import com.hitaxi.tools.phpConnection;
 import com.hitaxi.base.BaseActivity;
-import com.hitaxi.base.GlobalVar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -107,19 +100,30 @@ public class IncomeRecordAty extends BaseActivity {
     private void parseJson(String mJSONText) throws JSONException {
         JSONObject jObject = new JSONObject(mJSONText);
         JSONArray jArray = jObject.getJSONArray("TradArray");
-        String tid = jArray.getJSONObject(0).getString("Tid");
-        String startTime = jArray.getJSONObject(0).getString("StartTime");
-        String endTime = jArray.getJSONObject(0).getString("EndTime");
-        String StartLatitude = jArray.getJSONObject(0).getString("StartLatitude");
-        String StartLongitude = jArray.getJSONObject(0).getString("StartLongitude");
-        String EndLatitude = jArray.getJSONObject(0).getString("EndLatitude");
-        String EndLongitude = jArray.getJSONObject(0).getString("EndLongitude");
-        String EstimetePrice = jArray.getJSONObject(0).getString("EstimetePrice");
-        String ActualPrice = jArray.getJSONObject(0).getString("ActualPrice");
-        String TravelTime = jArray.getJSONObject(0).getString("TravelTime");
-        String Income = jArray.getJSONObject(0).getString("Income");
-        String Evaluation = jArray.getJSONObject(0).getString("Evaluation");
-        String Opinion = jArray.getJSONObject(0).getString("Opinion");
+        TradDetail td = new TradDetail();
+        for (int i = 0; i < jArray.length(); i++) {
+            String tid = jArray.getJSONObject(i).getString("Tid");
+            td.addTid(tid);
+            int money = jArray.getJSONObject(i).getInt("Income");
+            td.addMoney(money);
+        }
+        Log.i(TAG,td.getTidArray()+"");
+        Log.i(TAG,td.getMoneyArray()+"");
+        //
+//        String tid = jArray.getJSONObject(0).getString("Tid");
+//        String startTime = jArray.getJSONObject(0).getString("StartTime");
+//        String endTime = jArray.getJSONObject(0).getString("EndTime");
+//        String StartLatitude = jArray.getJSONObject(0).getString("StartLatitude");
+//        String StartLongitude = jArray.getJSONObject(0).getString("StartLongitude");
+//        String EndLatitude = jArray.getJSONObject(0).getString("EndLatitude");
+//        String EndLongitude = jArray.getJSONObject(0).getString("EndLongitude");
+//        String EstimetePrice = jArray.getJSONObject(0).getString("EstimetePrice");
+//        String ActualPrice = jArray.getJSONObject(0).getString("ActualPrice");
+//        String TravelTime = jArray.getJSONObject(0).getString("TravelTime");
+//        String Income = jArray.getJSONObject(0).getString("Income");
+//        String Evaluation = jArray.getJSONObject(0).getString("Evaluation");
+//        String Opinion = jArray.getJSONObject(0).getString("Opinion");
+        //
 
 
     }

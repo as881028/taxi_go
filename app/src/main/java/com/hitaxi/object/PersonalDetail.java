@@ -7,6 +7,9 @@ package com.hitaxi.object;
 public class PersonalDetail {
     //個人相關資訊
 
+    public class TradDetail{
+
+    }
     protected String personalCode;
     protected String userArray;
     protected String name;
