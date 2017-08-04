@@ -14,6 +14,8 @@ import com.dk.main.R;
 import com.hitaxi.adapter.OpinionAdapter;
 import com.hitaxi.base.MenuBaseActivity;
 
+
+//意見
 public class OpinionAty extends MenuBaseActivity {
 
     ListView opinion_Listview;

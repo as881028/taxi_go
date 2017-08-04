@@ -1,38 +1,58 @@
 package com.hitaxi.object;
 
+import com.hitaxi.tools.parseArray;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Created by DK on 2017/8/3.
  */
 
 public class TradDetail {
-    ArrayList<String> tidArray = new ArrayList<String>();
-    ArrayList<Integer> moneyArray = new ArrayList<Integer>();
-    ArrayList<String> monthArray = new ArrayList<String>();
+    ArrayList<String> tidArrayList = new ArrayList<String>();
+    ArrayList<Integer> moneyArrayList = new ArrayList<Integer>();
+    ArrayList<String> dateArrayList = new ArrayList<String>();
+
     public TradDetail() {
 
     }
 
     public void addTid(String tid) {
-        tidArray.add(tid);
+        tidArrayList.add(tid);
     }
-    public ArrayList<String> getTidArray(){
-        return this.tidArray;
+
+    public ArrayList<String> getTidArrayList() {
+        return this.tidArrayList;
+    }
+
+    public String[] getTidArray() {
+        return parseArray.parseStringArray(tidArrayList);
     }
 
     public void addMoney(int money) {
-        moneyArray.add(money);
+        moneyArrayList.add(money);
     }
-    public ArrayList<Integer> getMoneyArray(){
-        return this.moneyArray;
+
+    public ArrayList<Integer> getMoneyArrayList() {
+        return this.moneyArrayList;
+    }
+
+    public Integer[] getMoneyArray() {
+        return parseArray.parseIntArray(moneyArrayList);
     }
 
     public void addDate(String month) {
-        monthArray.add(month);
+        dateArrayList.add(month);
     }
-    public ArrayList<String> getDateArray(){
-        return this.monthArray;
+
+    public ArrayList<String> getDateArrayList() {
+        return this.dateArrayList;
     }
+
+    public String[] getDateArray() {
+        return parseArray.parseStringArray(dateArrayList);
+    }
+
 }

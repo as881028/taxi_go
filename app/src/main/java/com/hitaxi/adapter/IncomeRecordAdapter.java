@@ -21,9 +21,9 @@ public class IncomeRecordAdapter extends BaseAdapter {
     String[] dates;
     String[] digitals;
     String[] monthes;
-    String[] moneies;
+    Integer[] moneies;
 
-    public IncomeRecordAdapter(Context c, String[] dates, String[] digitals, String[] monthes, String[] moneies) {
+    public IncomeRecordAdapter(Context c, String[] dates, String[] digitals, String[] monthes, Integer[] moneies) {
         myInflater = LayoutInflater.from(c);
         this.dates = dates;
         this.digitals = digitals;
@@ -65,7 +65,7 @@ public class IncomeRecordAdapter extends BaseAdapter {
         date.setText(dates[postition]);
         digital.setText(digitals[postition]);
         month.setText(monthes[postition]);
-        money.setText(moneies[postition]);
+        money.setText(moneies[postition].toString());
         return convertView;
     }
 }

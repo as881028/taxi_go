@@ -19,6 +19,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+
+//每月份收入
 public class IncomeRecordAty extends BaseActivity {
 
 
@@ -54,13 +56,7 @@ public class IncomeRecordAty extends BaseActivity {
         mTask.execute((Void) null);
         //
 
-        income_record_Listview = (ListView) findViewById(R.id.income_record_Listview);
-        //建立自訂的Adapter
-        Log.i(TAG,td.getDateArray().size()+"");
-        Log.i(TAG,td.getDateArray()+"");
-        IncomeRecordAdapter adapter = new IncomeRecordAdapter(this, dates, digitals, monthes, moneies);
-        //設定ListView 的資源來源
-        income_record_Listview.setAdapter(adapter);
+
 
 
     }
@@ -104,7 +100,13 @@ public class IncomeRecordAty extends BaseActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-
+            income_record_Listview = (ListView) findViewById(R.id.income_record_Listview);
+            //建立自訂的Adapter
+//            Log.i(TAG,td.getDateArray().size()+"");
+//            Log.i(TAG,td.getDateArray()+"");
+            IncomeRecordAdapter adapter = new IncomeRecordAdapter(getApplicationContext(), td.getDateArray(), digitals, monthes, td.getMoneyArray());
+            //設定ListView 的資源來源
+            income_record_Listview.setAdapter(adapter);
         }
     }
 
@@ -121,7 +123,8 @@ public class IncomeRecordAty extends BaseActivity {
             td.addMoney(money);
 
             String date = jArray.getJSONObject(i).getString("StartTime");
-            String[] dateArray = date.split("-");
+            String[] dateArray = date.split(" ");
+            dateArray = dateArray[0].split("-");
             td.addDate(dateArray[0] + "年" + dateArray[1] + "月" + dateArray[2] + "日");
         }
         Log.i(TAG, td.getTidArray() + "");

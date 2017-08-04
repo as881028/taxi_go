@@ -13,6 +13,7 @@ public class OrderRecordAty extends MenuBaseActivity {
         super.onCreate(savedInstanceState);
         setMenuLayout(R.layout.activity_order_record);
 
+
     }
 
 
