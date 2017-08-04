@@ -31,6 +31,8 @@ import com.hitaxi.base.BaseActivity;
 import com.hitaxi.object.PersonalDetail;
 
 import com.hitaxi.object.TradDetail;
+
+import com.hitaxi.task.HttpTradPostTask;
 import com.hitaxi.tools.phpConnection;
 
 import org.json.JSONArray;
@@ -38,6 +40,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.ConnectException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -61,7 +64,7 @@ public class LoginAty extends BaseActivity {
      */
     private HttpPostLoginTask mAuthTask = null;
     private String mPersonalResult = null;
-//    private com.hitaxi.base.GlobalVar var;
+
 
     protected static final String TAG = "LoginAty";
     // UI references.
@@ -88,6 +91,7 @@ public class LoginAty extends BaseActivity {
         TradDetail = var.TradDetail;
         // set last user account and password (SQLite)
         setViewData();
+
     }
 
     //宣告相關物件
@@ -368,6 +372,7 @@ public class LoginAty extends BaseActivity {
             if (success) {
                 getPersonalData();
                 getTradeData();
+
                 finish();
             } else {
 //                mPasswordView.setError(getString(R.string.error_incorrect_password));
@@ -473,48 +478,6 @@ public class LoginAty extends BaseActivity {
 
     }
 
-    //讀取個人資料
-    public class HttpPostTradTask extends AsyncTask<Void, Void, String> {
-
-        private final Map<String, String> mMap;
-        private final String mUrl;
-
-        HttpPostTradTask(String url, Map<String, String> map) {
-            mMap = map;
-            mUrl = url;
-        }
-
-
-        @Override
-        protected String doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            String result = "";
-            try {
-                //取得PHP回傳值
-                result = phpConnection.createConnection(mUrl, mMap);
-                parseTradJson(result);
-
-                Log.i(TAG, result);
-
-            } catch (NullPointerException e) {
-                if (var.debug) {
-                    Log.i(TAG, "Null Point");
-                    return null;
-                }
-            } catch (Exception e) {
-                if (var.debug)
-                    Log.i(TAG, e.toString());
-            }
-            // TODO: register the new account here.
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-        }
-    }
 
     private void parseTradJson(String mJSONText) throws JSONException {
         JSONObject jObject = new JSONObject(mJSONText);
@@ -558,11 +521,22 @@ public class LoginAty extends BaseActivity {
     private void getTradeData() {
         //與api串接要資料
         Map<String, String> map = new HashMap<String, String>();
+
         map.put("Token", var.PersonalDetail.getUserToken());
         map.put("UserID", var.PersonalDetail.getUserID());
 
-        HttpPostTradTask mTask = new HttpPostTradTask(var.queryTrad, map);
-        mTask.execute((Void) null);
+        HttpTradPostTask mTask = new HttpTradPostTask(var.queryTrad, map);
+        try {
+            String result = mTask.execute((Void) null).get();
+            parseTradJson(result);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
 
     }
 }
