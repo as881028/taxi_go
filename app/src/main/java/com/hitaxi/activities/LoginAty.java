@@ -21,15 +21,19 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dk.main.R;
+import com.hitaxi.adapter.IncomeRecordAdapter;
 import com.hitaxi.base.BaseActivity;
 import com.hitaxi.object.PersonalDetail;
 
+import com.hitaxi.object.TradDetail;
 import com.hitaxi.tools.phpConnection;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -68,6 +72,7 @@ public class LoginAty extends BaseActivity {
     //    private DBHelper userDBHelper;
 //    LoginDetail LoginDetail = new LoginDetail();
     PersonalDetail PersonalDetail;
+    TradDetail TradDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +83,9 @@ public class LoginAty extends BaseActivity {
         initView();
         getGlobal();
         var.PersonalDetail = new PersonalDetail();
+        var.TradDetail = new TradDetail();
         PersonalDetail = var.PersonalDetail;
+        TradDetail = var.TradDetail;
         // set last user account and password (SQLite)
         setViewData();
     }
@@ -243,12 +250,12 @@ public class LoginAty extends BaseActivity {
                 String result = phpConnection.createConnection(var.validation, mMap);
                 Log.i(TAG, result);
                 //解析JSON
-                parseJson(result);
+                parseLoginJson(result);
                 //判斷是否為司機端
                 Intent intent = new Intent();
                 int userType = PersonalDetail.getUserType();
                 int code = PersonalDetail.getLoginCode();
-                if (userType== 2 && code == 1) {
+                if (userType == 2 && code == 1) {
                     if (var.debug) {
                         Log.i(TAG, "司機 登入成功");
                     }
@@ -360,7 +367,7 @@ public class LoginAty extends BaseActivity {
             //登入完成後
             if (success) {
                 getPersonalData();
-
+                getTradeData();
                 finish();
             } else {
 //                mPasswordView.setError(getString(R.string.error_incorrect_password));
@@ -375,7 +382,7 @@ public class LoginAty extends BaseActivity {
         }
     }
 
-    private void parseJson(String mJSONText) throws JSONException {
+    private void parseLoginJson(String mJSONText) throws JSONException {
         JSONObject jObject = new JSONObject(mJSONText);
         String code = jObject.getString("Code");
         String errorMsg = jObject.getString("ErrorMsg");
@@ -463,6 +470,99 @@ public class LoginAty extends BaseActivity {
             e.printStackTrace();
         }
 
+
+    }
+
+    //讀取個人資料
+    public class HttpPostTradTask extends AsyncTask<Void, Void, String> {
+
+        private final Map<String, String> mMap;
+        private final String mUrl;
+
+        HttpPostTradTask(String url, Map<String, String> map) {
+            mMap = map;
+            mUrl = url;
+        }
+
+
+        @Override
+        protected String doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+            String result = "";
+            try {
+                //取得PHP回傳值
+                result = phpConnection.createConnection(mUrl, mMap);
+                parseTradJson(result);
+
+                Log.i(TAG, result);
+
+            } catch (NullPointerException e) {
+                if (var.debug) {
+                    Log.i(TAG, "Null Point");
+                    return null;
+                }
+            } catch (Exception e) {
+                if (var.debug)
+                    Log.i(TAG, e.toString());
+            }
+            // TODO: register the new account here.
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+        }
+    }
+
+    private void parseTradJson(String mJSONText) throws JSONException {
+        JSONObject jObject = new JSONObject(mJSONText);
+        JSONArray jArray = jObject.getJSONArray("TradArray");
+
+        for (int i = 0; i < jArray.length(); i++) {
+
+            String tid = jArray.getJSONObject(i).getString("Tid");
+            TradDetail.addTid(tid);
+
+            int money = jArray.getJSONObject(i).getInt("Income");
+            TradDetail.addMoney(money);
+
+            String date = jArray.getJSONObject(i).getString("StartTime");
+            String[] dateArray = date.split(" ");
+            dateArray = dateArray[0].split("-");
+            TradDetail.addDate(dateArray[0] + "年" + dateArray[1] + "月" + dateArray[2] + "日");
+        }
+        Log.i(TAG, TradDetail.getTidArray() + "");
+        Log.i(TAG, TradDetail.getMoneyArray() + "");
+        Log.i(TAG, TradDetail.getDateArray() + "");
+        //
+//        String tid = jArray.getJSONObject(0).getString("Tid");
+//        String startTime = jArray.getJSONObject(0).getString("StartTime");
+//        String endTime = jArray.getJSONObject(0).getString("EndTime");
+//        String StartLatitude = jArray.getJSONObject(0).getString("StartLatitude");
+//        String StartLongitude = jArray.getJSONObject(0).getString("StartLongitude");
+//        String EndLatitude = jArray.getJSONObject(0).getString("EndLatitude");
+//        String EndLongitude = jArray.getJSONObject(0).getString("EndLongitude");
+//        String EstimetePrice = jArray.getJSONObject(0).getString("EstimetePrice");
+//        String ActualPrice = jArray.getJSONObject(0).getString("ActualPrice");
+//        String TravelTime = jArray.getJSONObject(0).getString("TravelTime");
+//        String Income = jArray.getJSONObject(0).getString("Income");
+//        String Evaluation = jArray.getJSONObject(0).getString("Evaluation");
+//        String Opinion = jArray.getJSONObject(0).getString("Opinion");
+        //
+
+
+    }
+
+    private void getTradeData() {
+        //與api串接要資料
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("Token", var.PersonalDetail.getUserToken());
+        map.put("UserID", var.PersonalDetail.getUserID());
+
+        HttpPostTradTask mTask = new HttpPostTradTask(var.queryTrad, map);
+        mTask.execute((Void) null);
 
     }
 }
