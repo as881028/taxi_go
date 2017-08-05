@@ -72,6 +72,7 @@ public class MapsAty extends BaseActivity implements OnMapReadyCallback, Connect
     Timer timer = new Timer(true);
     int LOCATION_SAVE_TIME_PRE_SECOND = 10;
     public com.hitaxi.object.PersonalDetail PersonalDetail;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

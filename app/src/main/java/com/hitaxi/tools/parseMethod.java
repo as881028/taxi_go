@@ -45,6 +45,14 @@ public class parseMethod {
             String[] dateArray = date.split(" ");
             dateArray = dateArray[0].split("-");
             td.addDate(dateArray[0] + "年" + dateArray[1] + "月" + dateArray[2] + "日");
+            double s_lat = Double.parseDouble(jArray.getJSONObject(i).getString("StartLatitude"));
+            double s_lng = Double.parseDouble(jArray.getJSONObject(i).getString("StartLongitude"));
+            double e_lat = Double.parseDouble(jArray.getJSONObject(i).getString("EndLatitude"));
+            double e_lng = Double.parseDouble(jArray.getJSONObject(i).getString("EndLongitude"));
+
+
+
+            td.addGeo(s_lat, s_lng,e_lat,e_lng);
         }
 
         //
