@@ -7,9 +7,10 @@ package com.hitaxi.object;
 public class PersonalDetail {
     //個人相關資訊
 
-    public class TradDetail{
+    public class TradDetail {
 
     }
+
     protected String personalCode;
     protected String userArray;
     protected String name;
@@ -73,6 +74,7 @@ public class PersonalDetail {
     // 1=>乘客
     //2=>司機
     protected String userType;
+
     public void setLoginDetail(String code, String errorMsg, String token, String userId, String userType) {
         this.loginCode = code;
         this.errorMsg = errorMsg;

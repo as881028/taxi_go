@@ -12,12 +12,12 @@ import java.util.Map;
  * Created by DK on 2017/8/5.
  */
 
-public class HttpTradPostTask extends AsyncTask<Void, Void, String> {
+public class HttpPostTask extends AsyncTask<Void, Void, String> {
     public String TAG = "HttpTradPostTask";
     public Map<String, String> mMap;
     public String url;
 
-    public HttpTradPostTask(String url, Map<String, String> map) {
+    public HttpPostTask(String url, Map<String, String> map) {
         mMap = map;
         this.url = url;
     }
@@ -29,7 +29,7 @@ public class HttpTradPostTask extends AsyncTask<Void, Void, String> {
         try {
             //取得PHP回傳值
             result = phpConnection.createConnection(url, mMap);
-//            parsePersonalJson(result);
+
 
             Log.i(TAG, result);
 

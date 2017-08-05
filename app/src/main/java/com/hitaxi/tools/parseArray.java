@@ -1,5 +1,10 @@
 package com.hitaxi.tools;
 
+import com.hitaxi.object.PersonalDetail;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -8,6 +13,17 @@ import java.util.Objects;
  */
 
 public class parseArray {
+    public static PersonalDetail parseLoginJson(String mJSONText) throws JSONException {
+        JSONObject jObject = new JSONObject(mJSONText);
+        String code = jObject.getString("Code");
+        String errorMsg = jObject.getString("ErrorMsg");
+        String token = jObject.getString("Token");
+        String userId = jObject.getString("UserId");
+        String userType = jObject.getString("UserType");
+        PersonalDetail pd = new PersonalDetail();
+        pd.setLoginDetail(code, errorMsg, token, userId, userType);
+        return pd;
+    }
 
     public static String[] parseStringArray(ArrayList<String> al) {
         String[] array = new String[al.size()];
