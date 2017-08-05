@@ -1,6 +1,8 @@
 package com.hitaxi.object;
 
-import com.hitaxi.tools.parseArray;
+
+
+import com.hitaxi.tools.parseMethod;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,7 +30,7 @@ public class TradDetail {
     }
 
     public String[] getTidArray() {
-        return parseArray.parseStringArray(tidArrayList);
+        return parseMethod.parseStringArray(tidArrayList);
     }
 
     public void addMoney(int money) {
@@ -40,7 +42,7 @@ public class TradDetail {
     }
 
     public Integer[] getMoneyArray() {
-        return parseArray.parseIntArray(moneyArrayList);
+        return parseMethod.parseIntArray(moneyArrayList);
     }
 
     public void addDate(String month) {
@@ -52,7 +54,7 @@ public class TradDetail {
     }
 
     public String[] getDateArray() {
-        return parseArray.parseStringArray(dateArrayList);
+        return parseMethod.parseStringArray(dateArrayList);
     }
 
 }

@@ -34,17 +34,22 @@ import com.hitaxi.object.TradDetail;
 
 import com.hitaxi.task.HttpPostTask;
 
+
+
+import com.hitaxi.tools.parseMethod;
 import com.hitaxi.tools.phpConnection;
+import com.hitaxi.tools.vaildTool;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.ConnectException;
-import java.net.URL;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+
 
 // DB columns
 import static com.hitaxi.db.DBConstants.ACCOUNT;
@@ -120,7 +125,6 @@ public class LoginAty extends BaseActivity {
         mProgressView = findViewById(R.id.login_progress);
     }
 
-
     private void setViewData() {
         Cursor cursor = getCursor();
         while (cursor.moveToNext()) {
@@ -165,7 +169,7 @@ public class LoginAty extends BaseActivity {
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (!TextUtils.isEmpty(password) && !vaildTool.isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -189,13 +193,6 @@ public class LoginAty extends BaseActivity {
 
         }
     }
-
-    //驗證密碼格式
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4 && password.length() < 16;
-    }
-
     /**
      * Shows the progress UI and hides the login form.
      */
@@ -253,7 +250,8 @@ public class LoginAty extends BaseActivity {
                 String result = phpConnection.createConnection(var.validation, mMap);
                 Log.i(TAG, result);
                 //解析JSON
-                parseLoginJson(result);
+                parseMethod.parseLoginJson(result, PersonalDetail);
+
                 //判斷是否為司機端
                 Intent intent = new Intent();
                 int userType = PersonalDetail.getUserType();
@@ -387,36 +385,6 @@ public class LoginAty extends BaseActivity {
         }
     }
 
-    private void parseLoginJson(String mJSONText) throws JSONException {
-        JSONObject jObject = new JSONObject(mJSONText);
-        String code = jObject.getString("Code");
-        String errorMsg = jObject.getString("ErrorMsg");
-        String token = jObject.getString("Token");
-        String userId = jObject.getString("UserId");
-        String userType = jObject.getString("UserType");
-        PersonalDetail.setLoginDetail(code, errorMsg, token, userId, userType);
-
-    }
-
-
-    //
-    private void parsePersonalJson(String mJSONText) throws JSONException {
-        JSONObject jObject = new JSONObject(mJSONText);
-        String code = jObject.getString("Code");
-        String userArray = jObject.getString("UserArray");
-        String name = new JSONObject(new JSONObject(mJSONText).getString("UserArray")).getString("Name");
-        String team = new JSONObject(new JSONObject(mJSONText).getString("UserArray")).getString("Team");
-        String callNum = new JSONObject(new JSONObject(mJSONText).getString("UserArray")).getString("CallNum");
-        String picture = new JSONObject(new JSONObject(mJSONText).getString("UserArray")).getString("Picture");
-
-        PersonalDetail.setDetail(code, userArray);
-        PersonalDetail.setName(name);
-        PersonalDetail.setTeam(team);
-        PersonalDetail.setCallNum(callNum);
-
-
-    }
-
     private void getPersonalData() {
         Map<String, String> map = new HashMap<String, String>();
         map.put("Token", PersonalDetail.getUserToken());
@@ -426,7 +394,7 @@ public class LoginAty extends BaseActivity {
         try {
 
             String result = mTask.execute((Void) null).get();
-            parsePersonalJson(result);
+            parseMethod.parsePersonalJson(result, PersonalDetail);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -434,45 +402,6 @@ public class LoginAty extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-    }
-
-    private void parseTradJson(String mJSONText) throws JSONException {
-        JSONObject jObject = new JSONObject(mJSONText);
-        JSONArray jArray = jObject.getJSONArray("TradArray");
-
-        for (int i = 0; i < jArray.length(); i++) {
-
-            String tid = jArray.getJSONObject(i).getString("Tid");
-            TradDetail.addTid(tid);
-
-            int money = jArray.getJSONObject(i).getInt("Income");
-            TradDetail.addMoney(money);
-
-            String date = jArray.getJSONObject(i).getString("StartTime");
-            String[] dateArray = date.split(" ");
-            dateArray = dateArray[0].split("-");
-            TradDetail.addDate(dateArray[0] + "年" + dateArray[1] + "月" + dateArray[2] + "日");
-        }
-        Log.i(TAG, TradDetail.getTidArray() + "");
-        Log.i(TAG, TradDetail.getMoneyArray() + "");
-        Log.i(TAG, TradDetail.getDateArray() + "");
-        //
-//        String tid = jArray.getJSONObject(0).getString("Tid");
-//        String startTime = jArray.getJSONObject(0).getString("StartTime");
-//        String endTime = jArray.getJSONObject(0).getString("EndTime");
-//        String StartLatitude = jArray.getJSONObject(0).getString("StartLatitude");
-//        String StartLongitude = jArray.getJSONObject(0).getString("StartLongitude");
-//        String EndLatitude = jArray.getJSONObject(0).getString("EndLatitude");
-//        String EndLongitude = jArray.getJSONObject(0).getString("EndLongitude");
-//        String EstimetePrice = jArray.getJSONObject(0).getString("EstimetePrice");
-//        String ActualPrice = jArray.getJSONObject(0).getString("ActualPrice");
-//        String TravelTime = jArray.getJSONObject(0).getString("TravelTime");
-//        String Income = jArray.getJSONObject(0).getString("Income");
-//        String Evaluation = jArray.getJSONObject(0).getString("Evaluation");
-//        String Opinion = jArray.getJSONObject(0).getString("Opinion");
-        //
 
 
     }
@@ -487,7 +416,7 @@ public class LoginAty extends BaseActivity {
         HttpPostTask mTask = new HttpPostTask(var.queryTrad, map);
         try {
             String result = mTask.execute((Void) null).get();
-            parseTradJson(result);
+            parseMethod.parseTradJson(result, TradDetail);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
