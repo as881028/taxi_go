@@ -35,7 +35,6 @@ import com.hitaxi.object.TradDetail;
 import com.hitaxi.task.HttpPostTask;
 
 
-
 import com.hitaxi.tools.parseMethod;
 import com.hitaxi.tools.phpConnection;
 import com.hitaxi.tools.vaildTool;
@@ -193,6 +192,7 @@ public class LoginAty extends BaseActivity {
 
         }
     }
+
     /**
      * Shows the progress UI and hides the login form.
      */
@@ -370,7 +370,7 @@ public class LoginAty extends BaseActivity {
             if (success) {
                 getPersonalData();
                 getTradeData();
-
+//                showProgress(false);
                 finish();
             } else {
 //                mPasswordView.setError(getString(R.string.error_incorrect_password));
@@ -395,6 +395,7 @@ public class LoginAty extends BaseActivity {
 
             String result = mTask.execute((Void) null).get();
             parseMethod.parsePersonalJson(result, PersonalDetail);
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

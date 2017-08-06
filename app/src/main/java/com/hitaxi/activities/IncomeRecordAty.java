@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,11 +29,11 @@ public class IncomeRecordAty extends BaseActivity {
 
     public com.hitaxi.object.PersonalDetail PersonalDetail;
     ListView income_record_Listview;
-    public String[] dates = new String[]{"2017年5月12", "2017年5月13日", "2017年5月14日", "2017年5月15日", "2017年5月16日",
-            "2017年5月17日", "2017年5月18日", "2017年5月19日", "2017年5月20日", "2017年5月21日"};
+    public String[] dates = new String[]{"2017年", "2017年", "2017年", "2017年", "2017年",
+            "2017年", "2017年", "2017年", "2017年", "2017年", "2017年", "2017年"};
 
-    public String[] digitals = {"85", "87", "65", "66", "87", "88", "89", "90", "81", "82"};
-    public String[] monthes = {"一", "二", "三", "四", "五", "六", "七", "八", "九", "十"};
+    public Integer[] digitals = {85, 87, 65, 66, 87, 88, 89, 90, 81, 82, 83, 84};
+    public String[] monthes = {"一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"};
     public String[] moneies = {"1000NT", "1001NT", "1002NT", "1003NT", "1004NT",
             "1005NT", "1006NT", "靜宜", "東海", "逢甲"};
     public TradDetail TradDetail;
@@ -49,8 +50,11 @@ public class IncomeRecordAty extends BaseActivity {
 
         income_record_Listview = (ListView) findViewById(R.id.income_record_Listview);
         //建立自訂的Adapter
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+        String years = sdf.format(new java.util.Date());
 
-        IncomeRecordAdapter adapter = new IncomeRecordAdapter(getApplicationContext(), TradDetail.getDateArray(), digitals, monthes, TradDetail.getMoneyArray());
+
+        IncomeRecordAdapter adapter = new IncomeRecordAdapter(getApplicationContext(), years + "年", digitals, monthes, TradDetail.getRecordMoney());
         //設定ListView 的資源來源
         income_record_Listview.setAdapter(adapter);
         //

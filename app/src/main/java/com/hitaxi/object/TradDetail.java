@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -27,12 +28,19 @@ public class TradDetail {
     ArrayList<String> tidArrayList = new ArrayList<String>();
     ArrayList<Integer> moneyArrayList = new ArrayList<Integer>();
     ArrayList<String> dateArrayList = new ArrayList<String>();
+    ArrayList<String> yearArrayList = new ArrayList<String>();
+    ArrayList<String> monthArrayList = new ArrayList<String>();
+    ArrayList<String> dayArrayList = new ArrayList<String>();
     ArrayList<Double> al_startLat = new ArrayList<Double>();
     ArrayList<Double> al_startLng = new ArrayList<Double>();
     ArrayList<Double> al_endLat = new ArrayList<Double>();
     ArrayList<Double> al_endLng = new ArrayList<Double>();
     String[] strAddr;
     String[] endAddr;
+    Integer[] monthMoney = new Integer[12];
+
+
+//    HashMap<Integer, Integer> monthMoney = new HashMap<>();
 
     public TradDetail() {
 
@@ -62,8 +70,8 @@ public class TradDetail {
         return parseMethod.parseIntArray(moneyArrayList);
     }
 
-    public void addDate(String month) {
-        dateArrayList.add(month);
+    public void addDate(String date) {
+        dateArrayList.add(date);
     }
 
     public ArrayList<String> getDateArrayList() {
@@ -72,6 +80,10 @@ public class TradDetail {
 
     public String[] getDateArray() {
         return parseMethod.parseStringArray(dateArrayList);
+    }
+
+    public void addMonth(String month) {
+        monthArrayList.add(month);
     }
 
     public List<Address> getAddress(Context c) {
@@ -111,12 +123,42 @@ public class TradDetail {
     }
 
     public void addGeo(Double s_lat, Double s_lng, Double e_lat, Double e_lng) {
-
         al_startLat.add(s_lat);
         al_startLng.add(s_lng);
         al_endLat.add(e_lat);
         al_endLng.add(e_lng);
-
     }
 
+    //計算每月收入紀錄
+    public void calOrderRecord() {
+
+        for (int i = 0; i < monthMoney.length; i++) {
+            monthMoney[i] = 0;
+        }
+
+        for (int i = 0; i < moneyArrayList.size(); i++) {
+            int month = Integer.parseInt(monthArrayList.get(i));
+            monthMoney[month - 1] += moneyArrayList.get(i);
+        }
+    }
+
+    public Integer[] getRecordMoney() {
+        return monthMoney;
+    }
+
+    public void addYear(String year) {
+        yearArrayList.add(year);
+    }
+
+    public String[] getYear() {
+        return parseMethod.parseStringArray(yearArrayList);
+    }
+
+    public void addDay(String day) {
+        dayArrayList.add(day);
+    }
+
+    public String[] getDay() {
+        return parseMethod.parseStringArray(dayArrayList);
+    }
 }

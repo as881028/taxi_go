@@ -18,14 +18,14 @@ import java.util.ArrayList;
 
 public class IncomeRecordAdapter extends BaseAdapter {
     private LayoutInflater myInflater;
-    String[] dates;
-    String[] digitals;
+    String years;
+    Integer[] digitals;
     String[] monthes;
     Integer[] moneies;
 
-    public IncomeRecordAdapter(Context c, String[] dates, String[] digitals, String[] monthes, Integer[] moneies) {
+    public IncomeRecordAdapter(Context c, String years, Integer[] digitals, String[] monthes, Integer[] moneies) {
         myInflater = LayoutInflater.from(c);
-        this.dates = dates;
+        this.years = years;
         this.digitals = digitals;
         this.monthes = monthes;
         this.moneies = moneies;
@@ -33,12 +33,12 @@ public class IncomeRecordAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return dates.length;
+        return monthes.length;
     }
 
     @Override
     public Object getItem(int position) {
-        return dates[position];
+        return monthes[position];
     }
 
     public long getItemId(int position) {
@@ -62,9 +62,9 @@ public class IncomeRecordAdapter extends BaseAdapter {
         TextView money = ((TextView)
                 convertView.findViewById(R.id.money));
 
-        date.setText(dates[postition]);
-        digital.setText(digitals[postition]);
-        month.setText(monthes[postition]);
+        date.setText(years);
+        digital.setText(digitals[postition].toString());
+        month.setText(monthes[postition] + "月累積收入");
         money.setText(moneies[postition].toString());
         return convertView;
     }
