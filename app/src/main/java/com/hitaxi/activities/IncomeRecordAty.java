@@ -3,6 +3,7 @@ package com.hitaxi.activities;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.dk.main.R;
@@ -48,6 +49,8 @@ public class IncomeRecordAty extends BaseActivity {
         PersonalDetail = var.PersonalDetail;
         TradDetail = var.TradDetail;
 
+
+        //listView Adpater start
         income_record_Listview = (ListView) findViewById(R.id.income_record_Listview);
         //建立自訂的Adapter
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
@@ -55,9 +58,10 @@ public class IncomeRecordAty extends BaseActivity {
 
 
         IncomeRecordAdapter adapter = new IncomeRecordAdapter(getApplicationContext(), years + "年", digitals, monthes, TradDetail.getRecordMoney());
+
         //設定ListView 的資源來源
         income_record_Listview.setAdapter(adapter);
-        //
+        //listView Adpater end
 
 
     }

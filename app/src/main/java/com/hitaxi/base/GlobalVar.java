@@ -2,6 +2,7 @@ package com.hitaxi.base;
 
 import android.app.Application;
 
+import com.hitaxi.object.PersonalDetail;
 import com.hitaxi.object.TradDetail;
 
 /**

@@ -1,6 +1,7 @@
 package com.hitaxi.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,10 @@ public class OpinionAdapter extends BaseAdapter {
         this.dates = dates;
         this.stars = stars;
         this.contents = contents;
+        Log.i("opinion", dates[0]);
+        Log.i("opinion", stars[0]);
+        Log.i("opinion", contents[0]);
+
 
     }
 
@@ -47,7 +52,7 @@ public class OpinionAdapter extends BaseAdapter {
 
     @Override
     public View getView(int postition, View convertView, ViewGroup parent) {
-        convertView = myInflater.inflate(R.layout.reservation_listview_layout, null);
+        convertView = myInflater.inflate(R.layout.opinion_listview_layout, null);
         //取得XML內容
         TextView tvDate = ((TextView)
                 convertView.findViewById(R.id.date));
@@ -57,10 +62,12 @@ public class OpinionAdapter extends BaseAdapter {
                 convertView.findViewById(R.id.ratingBar));
         TextView tvOpinionContent = ((TextView)
                 convertView.findViewById(R.id.opinion_content));
-
+        Log.i("test", dates[postition]);
         tvDate.setText(dates[postition]);
-        //ratingBar.setRating(stars[postition]);
+//        rbRatingBar.setRating((float) (1.5));
         tvOpinionContent.setText(contents[postition]);
+        Log.i("test", contents[postition]);
+
         return convertView;
     }
 }
