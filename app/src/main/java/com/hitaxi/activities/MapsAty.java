@@ -2,6 +2,7 @@ package com.hitaxi.activities;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -12,6 +13,9 @@ import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.hitaxi.base.BaseActivity;
@@ -73,6 +77,9 @@ public class MapsAty extends BaseActivity implements OnMapReadyCallback, Connect
     int LOCATION_SAVE_TIME_PRE_SECOND = 10;
     public com.hitaxi.object.PersonalDetail PersonalDetail;
 
+    Button btnStatus;
+    LinearLayout llStatus;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +93,29 @@ public class MapsAty extends BaseActivity implements OnMapReadyCallback, Connect
         //地圖同步
         mapFragment.getMapAsync(this);
 
+        initView();
+    }
 
+    View.OnClickListener statusClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (var.workStatus == false) {
+                var.workStatus = true;
+                btnStatus.setText("上線");
+                llStatus.setBackgroundColor(Color.parseColor("#5500A600"));
+
+            } else {
+                var.workStatus = false;
+                btnStatus.setText("離線");
+                llStatus.setBackgroundColor(Color.parseColor("#55750000"));
+            }
+        }
+    };
+
+    private void initView() {
+        btnStatus = (Button) findViewById(R.id.btnStatus);
+        btnStatus.setOnClickListener(statusClick);
+        llStatus = (LinearLayout) findViewById(R.id.llStatus);
     }
 
 

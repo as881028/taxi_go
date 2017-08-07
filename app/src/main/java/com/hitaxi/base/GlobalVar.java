@@ -21,5 +21,6 @@ public class GlobalVar extends Application {
     public String driver_location_add = "/driver_location_add.php";
     public com.hitaxi.object.PersonalDetail PersonalDetail;
     public TradDetail TradDetail;
+    public Boolean workStatus=false;
 
 }
