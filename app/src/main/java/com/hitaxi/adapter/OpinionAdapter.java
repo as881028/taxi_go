@@ -15,60 +15,6 @@ import com.dk.main.R;
 /**
  * Created by DK on 2017/8/3.
  */
-//public class OpinionAdapter extends BaseAdapter{
-//
-//    private Context mContext;
-//    String[] dates;
-//        String[] stars;
-//    String[] contents;
-//    public OpinionAdapter(Context c, String[] dates, String[] stars, String[] contents) {
-//        //myInflater = LayoutInflater.from(c);
-//        this.mContext = c;
-//        this.dates = dates;
-//        this.stars = stars;
-//        this.contents = contents;
-//    }
-//
-//    @Override
-//    public int getCount() {
-//        // TODO Auto-generated method stub
-//        return dates.length;    }
-//
-//    @Override
-//    public Object getItem(int position) {
-//        // TODO Auto-generated method stub
-//        return dates[position];
-//    }
-//
-//    @Override
-//    public long getItemId(int position) {
-//        // TODO Auto-generated method stub
-//        return position;
-//    }
-//
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//        // TODO Auto-generated method stub
-//        ViewHolder viewholder = null;
-//        if(convertView == null){
-//            convertView = View.inflate(mContext, R.layout.opinion_listview_layout, null);
-//            viewholder = new ViewHolder();
-//            viewholder.titleTv = (TextView)convertView.findViewById(R.id.date);
-//            convertView.setTag(viewholder);
-//        }
-//        else{
-//            viewholder = (ViewHolder)convertView.getTag();
-//        }
-//        viewholder.titleTv.setText(dates[position]);
-//
-//        return convertView;
-//    }
-//
-//    public static class ViewHolder{
-//        TextView titleTv;
-//    }
-//
-//}
 
 public class OpinionAdapter extends BaseAdapter {
 
