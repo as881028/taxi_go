@@ -28,8 +28,10 @@ public class OpinionAty extends MenuBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setMenuLayout(R.layout.activity_opinion);
-        opinion_Listview = (ListView) findViewById(R.id.opinion_Listview);
+       // setMenuLayout(R.layout.activity_opinion);
+        setContentView(R.layout.activity_opinion);
+
+        opinion_Listview = (ListView)findViewById(R.id.opinion_Listview);
 
         //建立自訂的Adapter
         OpinionAdapter adapter = new OpinionAdapter(getApplicationContext(), dates, stars, contents);
