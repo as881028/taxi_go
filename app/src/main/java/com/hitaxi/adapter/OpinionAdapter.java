@@ -22,14 +22,14 @@ public class OpinionAdapter extends BaseAdapter {
     private Context mContext;
 
     String[] dates;
-    String[] stars;
+    Integer[] rating;
     String[] contents;
 
-    public OpinionAdapter(Context c, String[] dates, String[] stars, String[] contents) {
+    public OpinionAdapter(Context c, String[] dates, Integer[] rating, String[] contents) {
         //myInflater = LayoutInflater.from(c);
         this.mContext = c;
         this.dates = dates;
-        this.stars = stars;
+        this.rating = rating;
         this.contents = contents;
     }
 
@@ -50,44 +50,29 @@ public class OpinionAdapter extends BaseAdapter {
     @Override
     public View getView(int postition, View convertView, ViewGroup parent) {
         ViewHolder viewholder = null;
-        if(convertView == null){
-        //convertView = myInflater.inflate(R.layout.opinion_listview_layout, null);
-            convertView = View.inflate(mContext,R.layout.opinion_listview_layout, null);
-        //取得XML內容
+        if (convertView == null) {
+            //convertView = myInflater.inflate(R.layout.opinion_listview_layout, null);
+            convertView = View.inflate(mContext, R.layout.opinion_listview_layout, null);
+            //取得XML內容
 
             viewholder = new ViewHolder();
-            viewholder.tvDate = (TextView)convertView.findViewById(R.id.date);
-            viewholder.tvScore = (TextView)convertView.findViewById(R.id.score);
-            viewholder.rbRatingBar = (RatingBar)convertView.findViewById(R.id.ratingBar);
-            viewholder.tvOpinionContent = (TextView)convertView.findViewById(R.id.opinion_content);
-
-//        TextView tvDate = ((TextView)
-//                convertView.findViewById(R.id.date));
-//        TextView tvScore = ((TextView)
-//                convertView.findViewById(R.id.score));
-//        RatingBar rbRatingBar = ((RatingBar)
-//                convertView.findViewById(R.id.ratingBar));
-//        TextView tvOpinionContent = ((TextView)
-//                convertView.findViewById(R.id.opinion_content));
-//
-//        tvDate.setText(dates[postition]);
-////        rbRatingBar.setRating((float) (1.5));
-//        tvOpinionContent.setText(contents[postition]);
-//        Log.i("test", contents[postition]);
-
+            viewholder.tvDate = (TextView) convertView.findViewById(R.id.date);
+            viewholder.tvScore = (TextView) convertView.findViewById(R.id.score);
+            viewholder.rbRatingBar = (RatingBar) convertView.findViewById(R.id.ratingBar);
+            viewholder.tvOpinionContent = (TextView) convertView.findViewById(R.id.opinion_content);
 
             convertView.setTag(viewholder);
+        } else {
+            viewholder = (ViewHolder) convertView.getTag();
         }
-        else{
-            viewholder = (ViewHolder)convertView.getTag();
-        }
-        Log.i("test", dates[postition]);
+//        Log.i("test", dates[postition]);
         viewholder.tvDate.setText(dates[postition]);
-        viewholder.rbRatingBar.setRating((float) (1.5));
+        viewholder.rbRatingBar.setRating((float) rating[postition]);
         viewholder.tvOpinionContent.setText(contents[postition]);
         return convertView;
     }
-    public static class ViewHolder{
+
+    public static class ViewHolder {
         TextView tvDate;
         TextView tvScore;
         RatingBar rbRatingBar;

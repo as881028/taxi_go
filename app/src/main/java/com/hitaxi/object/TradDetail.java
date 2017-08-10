@@ -35,6 +35,11 @@ public class TradDetail {
     ArrayList<Double> al_startLng = new ArrayList<Double>();
     ArrayList<Double> al_endLat = new ArrayList<Double>();
     ArrayList<Double> al_endLng = new ArrayList<Double>();
+
+    ArrayList<String> endTimeArrayList = new ArrayList<String>();
+    ArrayList<String> opinionArrayList = new ArrayList<String>();
+    ArrayList<Integer> ratingArrayList = new ArrayList<Integer>();
+
     String[] strAddr;
     String[] endAddr;
     Integer[] monthMoney = new Integer[12];
@@ -161,4 +166,33 @@ public class TradDetail {
     public String[] getDay() {
         return parseMethod.parseStringArray(dayArrayList);
     }
+
+    public void addEndTime(String endTime) {
+        endTimeArrayList.add(endTime);
+    }
+
+    public String[] getEndTime() {
+        return parseMethod.parseStringArray(endTimeArrayList);
+    }
+
+    public void addOpinion(String opinion) {
+        opinionArrayList.add(opinion);
+
+    }
+
+    public String[] getOpinion() {
+        return parseMethod.parseStringArray(opinionArrayList);
+
+    }
+
+    public void addRating(int score) {
+        ratingArrayList.add(score);
+
+    }
+
+    public Integer[] getRating() {
+        return parseMethod.parseIntArray(ratingArrayList);
+
+    }
+
 }

@@ -41,9 +41,19 @@ public class parseMethod {
             int money = jArray.getJSONObject(i).getInt("Income");
             td.addMoney(money);
 
+            String endTime = jArray.getJSONObject(i).getString("EndTime");
+            td.addEndTime(endTime);
+
+            String opinion = jArray.getJSONObject(i).getString("Opinion");
+            td.addOpinion(opinion);
+
+            int rating = jArray.getJSONObject(i).getInt("Evaluation");
+            td.addRating(rating);
+
             String date = jArray.getJSONObject(i).getString("StartTime");
             String[] dateArray = date.split(" ");
             dateArray = dateArray[0].split("-");
+
             td.addDay(dateArray[2]);
             td.addMonth(dateArray[1]);
             td.addYear(dateArray[0]);
@@ -98,7 +108,7 @@ public class parseMethod {
     public static String[] parseStringArray(ArrayList<String> al) {
         String[] array = new String[al.size()];
         for (int i = 0; i < al.size(); i++) {
-            array[i] = al.get(0);
+            array[i] = al.get(i);
         }
         return array;
     }
@@ -106,7 +116,7 @@ public class parseMethod {
     public static Integer[] parseIntArray(ArrayList<Integer> al) {
         Integer[] array = new Integer[al.size()];
         for (int i = 0; i < al.size(); i++) {
-            array[i] = al.get(0);
+            array[i] = al.get(i);
         }
         return array;
     }
