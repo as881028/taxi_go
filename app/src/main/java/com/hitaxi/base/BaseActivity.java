@@ -202,7 +202,7 @@ public class BaseActivity extends AppCompatActivity {
         if (var.PersonalDetail.getName() != null) {
             tvDriverName.setText("姓名: " + var.PersonalDetail.getName());
             tvDriverNum.setText("呼號: " + var.PersonalDetail.getCallNum());
-            tvDriverTeam.setText("車隊: " + var.PersonalDetail.getTeam());
+            tvDriverTeam.setText("車隊: " + var.PersonalDetail.getTeamName());
         }
     }
 }

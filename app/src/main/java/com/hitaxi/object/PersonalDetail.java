@@ -14,9 +14,14 @@ public class PersonalDetail {
     protected String personalCode;
     protected String userArray;
     protected String name;
-    protected String team;
+
     protected String callNum;
     protected String setPicture;
+
+    protected String c_Name;
+    protected String c_Addr;
+    protected String c_Phone;
+    protected String c_Fax;
 
 
     public void setDetail(String code, String UserArray) {
@@ -36,12 +41,28 @@ public class PersonalDetail {
         return this.name;
     }
 
-    public void setTeam(String team) {
-        this.team = team;
+    public void setTeam(String name, String addr, String phone, String fax) {
+        this.c_Name = name;
+        this.c_Addr = addr;
+        this.c_Phone = phone;
+        this.c_Fax = fax;
+
     }
 
-    public String getTeam() {
-        return this.team;
+    public String getTeamName() {
+        return this.c_Name;
+    }
+
+    public String getTeamAddr() {
+        return this.c_Addr;
+    }
+
+    public String getTeamPhone() {
+        return this.c_Phone;
+    }
+
+    public String getTeamFax() {
+        return this.c_Fax;
     }
 
     public void setCallNum(String callNum) {

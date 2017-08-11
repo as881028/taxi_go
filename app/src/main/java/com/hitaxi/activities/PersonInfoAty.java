@@ -39,7 +39,7 @@ public class PersonInfoAty extends MenuBaseActivity {
 
 
         tvCallNum.setText(PersonalDetail.getCallNum());
-        tvDriverTeam.setText(PersonalDetail.getTeam());
+        tvDriverTeam.setText(PersonalDetail.getTeamName());
     }
 
 

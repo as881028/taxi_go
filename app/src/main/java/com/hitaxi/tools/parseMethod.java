@@ -93,13 +93,20 @@ public class parseMethod {
         String code = jObject.getString("Code");
         String userArray = jObject.getString("UserArray");
         String name = new JSONObject(new JSONObject(mJSONText).getString("UserArray")).getString("Name");
-        String team = new JSONObject(new JSONObject(mJSONText).getString("UserArray")).getString("Team");
+//        String team = new JSONObject(new JSONObject(mJSONText).getString("UserArray")).getString("Team");
         String callNum = new JSONObject(new JSONObject(mJSONText).getString("UserArray")).getString("CallNum");
         String picture = new JSONObject(new JSONObject(mJSONText).getString("UserArray")).getString("Picture");
+        //車隊相關資料
+        String c_Name = new JSONObject(new JSONObject(mJSONText).getString("UserArray")).getString("CarTeamName");
+        String c_Addr = new JSONObject(new JSONObject(mJSONText).getString("UserArray")).getString("CarTeamAddr");
+        String c_Phone = new JSONObject(new JSONObject(mJSONText).getString("UserArray")).getString("CarTeamPhone");
+        String c_Fax = new JSONObject(new JSONObject(mJSONText).getString("UserArray")).getString("CarTeamFax");
+//        pd.setTeam(team);
+        pd.setTeam(c_Name, c_Addr, c_Phone, c_Fax);
 
         pd.setDetail(code, userArray);
         pd.setName(name);
-        pd.setTeam(team);
+
         pd.setCallNum(callNum);
 
 
