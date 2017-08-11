@@ -20,6 +20,13 @@ import com.hitaxi.object.TradDetail;
 
 import java.util.List;
 
+/*
+Activity Name:      收入紀錄畫面
+creator:            Stanley.li
+layout:             activity_opinion
+路徑:               選單->接單紀錄
+adapter:            OrderRecordAdapter
+ */
 public class OrderRecordAty extends MenuBaseActivity {
     ListView order_record_ListView;
     String[] month_days = new String[]{"5月12", "5月13日", "5月14日", "5月15日", "5月16日",

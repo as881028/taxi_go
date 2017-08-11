@@ -9,7 +9,12 @@ import android.widget.TextView;
 import com.dk.main.R;
 import com.hitaxi.base.GlobalVar;
 import com.hitaxi.base.MenuBaseActivity;
-
+/*
+Activity Name:      個人資料畫面
+creator:            Stanley.li
+layout:             activity_opinion
+路徑:               選單->個人資料
+ */
 public class PersonInfoAty extends MenuBaseActivity {
     Intent i = new Intent();
     private String mConnResult = null;

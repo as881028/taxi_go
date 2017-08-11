@@ -41,6 +41,12 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/*
+Activity Name:      地圖畫面
+creator:            Stanley.li
+layout:             activity_menu
+路徑:               登入後主畫面
+ */
 public class MapsAty extends BaseActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener, LocationSource.OnLocationChangedListener {
 
 

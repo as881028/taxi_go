@@ -58,6 +58,13 @@ import static com.hitaxi.db.DBConstants.TOKEN;
 import static com.hitaxi.db.DBConstants.USERID;
 //
 
+/*
+Activity Name:      登入畫面
+creator:            Stanley.li
+layout:             activity_login
+路徑:               啟動畫面
+ */
+
 /**
  * A login screen that offers login via email/password.
  */

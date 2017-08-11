@@ -22,7 +22,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-//每月份收入
+/*
+Activity Name:      收入統計畫面
+creator:            Stanley.li
+layout:             activity_income_record
+list view layout:   income_record_Listview
+adapter:            IncomeRecordAdapter
+路徑:               選單->個人資料->收入紀錄
+ */
 public class IncomeRecordAty extends BaseActivity {
 
 

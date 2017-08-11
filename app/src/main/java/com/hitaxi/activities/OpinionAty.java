@@ -17,8 +17,13 @@ import com.hitaxi.base.MenuBaseActivity;
 import com.hitaxi.object.PersonalDetail;
 import com.hitaxi.object.TradDetail;
 
-
-//意見
+/*
+Activity Name:      意見畫面
+creator:            Stanley.li
+layout:             activity_opinion
+路徑:               選單->個人資料->意見
+adapter:            OpinionAdapter
+ */
 public class OpinionAty extends MenuBaseActivity {
 
     ListView opinion_Listview;
@@ -42,7 +47,7 @@ public class OpinionAty extends MenuBaseActivity {
         getGlobal();
         PersonalDetail = var.PersonalDetail;
         TradDetail = var.TradDetail;
-       
+
 
         //建立自訂的Adapter
         OpinionAdapter adapter = new OpinionAdapter(getApplicationContext(), TradDetail.getEndTime(), TradDetail.getRating(), TradDetail.getOpinion());
