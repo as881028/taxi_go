@@ -271,7 +271,8 @@ public class LoginAty extends BaseActivity {
 
 
                     // 換頁 to MapsActivity
-                    intent.setClass(LoginAty.this, MapsAty.class);
+                    intent.setClass(LoginAty.this, PayAty.class);
+//                    intent.setClass(LoginAty.this, MapsAty.class);
                     startActivity(intent);
                     LoginAty.this.finish();
                     //
@@ -300,6 +301,7 @@ public class LoginAty extends BaseActivity {
                         Log.i(TAG, "登入失敗,DEBUG MODE ON,直接登入");
                         //跳過登入
                         intent.setClass(LoginAty.this, MapsAty.class);
+
                         startActivity(intent);
                         LoginAty.this.finish();
                         return true;
