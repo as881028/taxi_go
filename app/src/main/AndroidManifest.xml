@@ -94,13 +94,16 @@
         <activity
             android:name="com.hitaxi.activities.ModPersonInfoAty"
             android:label="@string/title_activity_personal_information"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name="com.hitaxi.activities.PayAty"
             android:label="@string/title_activity_personal_information"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.hitaxi.activities.CheckMoneyAty"
+            android:label="@string/title_activity_personal_information"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

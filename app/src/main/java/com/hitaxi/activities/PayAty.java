@@ -1,6 +1,7 @@
 package com.hitaxi.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,8 +41,8 @@ public class PayAty extends MenuBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // setMenuLayout(R.layout.activity_opinion);
-        setContentView(R.layout.activity_pay);
+        setMenuLayout(R.layout.activity_pay);
+//        setContentView(R.layout.activity_pay);
 
 
         getGlobal();
@@ -50,6 +51,14 @@ public class PayAty extends MenuBaseActivity {
 
         initView();
         btnSetOnClick();
+
+        Bundle bundle = this.getIntent().getExtras();
+
+        if (bundle != null) {
+            int total = bundle.getInt("total");
+            tvTotal.setText(total + "");
+        }
+
 
     }
 
@@ -75,6 +84,12 @@ public class PayAty extends MenuBaseActivity {
 
     public void submitTotal() {
         int total = Integer.parseInt(tvTotal.getText().toString());
+        Intent it = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putInt("total", Integer.parseInt(tvTotal.getText().toString()));
+        it.putExtras(bundle);
+        it.setClass(this, CheckMoneyAty.class);
+        startActivity(it);
     }
 
     public void clearTotal() {
